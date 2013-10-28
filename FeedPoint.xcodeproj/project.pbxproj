@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F9132E06180C3B64002B2323 /* Image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9132E05180C3B64002B2323 /* Image1.jpg */; };
-		F9132E08180C3B8A002B2323 /* Image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9132E07180C3B8A002B2323 /* Image2.jpg */; };
 		F9132E0A180C3BB1002B2323 /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9132E09180C3BB1002B2323 /* image3.jpg */; };
 		F9132E0E180C3F75002B2323 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E0C180C3F75002B2323 /* TodayViewController.m */; };
 		F9132E0F180C3F75002B2323 /* TodayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9132E0D180C3F75002B2323 /* TodayViewController.xib */; };
@@ -72,8 +70,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F9132E05180C3B64002B2323 /* Image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Image1.jpg; path = "../../../Pictures/Photo Booth/Image1.jpg"; sourceTree = "<group>"; };
-		F9132E07180C3B8A002B2323 /* Image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Image2.jpg; path = "../../../Pictures/Photo Booth/Image2.jpg"; sourceTree = "<group>"; };
 		F9132E09180C3BB1002B2323 /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = image3.jpg; path = ../../../Downloads/Scrolling/image3.jpg; sourceTree = "<group>"; };
 		F9132E0B180C3F75002B2323 /* TodayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
 		F9132E0C180C3F75002B2323 /* TodayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
@@ -187,8 +183,6 @@
 			children = (
 				F9132E10180CAD3A002B2323 /* menu.png */,
 				F9132E09180C3BB1002B2323 /* image3.jpg */,
-				F9132E07180C3B8A002B2323 /* Image2.jpg */,
-				F9132E05180C3B64002B2323 /* Image1.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -430,9 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9132E5A18109AC1002B2323 /* TodayListViewController.xib in Resources */,
-				F9132E08180C3B8A002B2323 /* Image2.jpg in Resources */,
 				F9132E0A180C3BB1002B2323 /* image3.jpg in Resources */,
-				F9132E06180C3B64002B2323 /* Image1.jpg in Resources */,
 				F9C7D1CC17F1F3BD005AB07F /* images in Resources */,
 				F9C7D1D117F20A46005AB07F /* FPWebViewController.xib in Resources */,
 				F9C7D1C817F1E86B005AB07F /* FPMainViewController.xib in Resources */,
