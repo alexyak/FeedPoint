@@ -10,6 +10,7 @@
 #import "TodayViewController.h"
 #import "FPMainViewController.h"
 #import "TodayListViewController.h"
+#import "FPWebViewController.h"
 
 
 @implementation PagingViewController
@@ -36,22 +37,6 @@
     
     self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     
-    //self.pageControl.pageIndicatorTintColor = [UIColor greenColor];
-    
-    //UIButton* fakeButton = (UIButton *) [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu.png"]];
-    //UIBarButtonItem *fakeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:fakeButton];
-    //self.navigationItem.rightBarButtonItem = fakeButtonItem;
-    
-    //UINavigationItem *navItem = self.navigationBar.items[0];
-    
-    //navItem.rightBarButtonItem = fakeButtonItem;
-    
-    imageArray = [[NSArray alloc] initWithObjects:@"image1.jpg", @"image2.jpg", @"image3.jpg", nil];
-    
-    viewArray = [[NSMutableArray alloc] init];
-    
-    
-    //self.scrollView.contentOffset = CGPointMake(0,32);
     
     CGRect frame;
     frame.origin.x = 0;
@@ -73,7 +58,7 @@
     frame.origin.x = frame.size.width;
     frame.origin.y = 0;
     frame.size = self.scrollView.frame.size;
-    frame.size.height = frame.size.height - 80;
+    frame.size.height = frame.size.height - 40;
     
     TodayListViewController *todayListViewController = [[TodayListViewController alloc] initWithNibName:@"TodayListViewController" bundle:nil];
     
@@ -89,14 +74,14 @@
     frame.size = self.scrollView.frame.size;
     frame.size.height = frame.size.height - 40;
     
-    FPMainViewController *listViewController = [[FPMainViewController alloc] initWithNibName:@"FPMainViewController" bundle:nil];
+    //FPMainViewController *listViewController = [[FPMainViewController alloc] initWithNibName:@"FPMainViewController" bundle:nil];
     
     //UIView *view = listViewController.view;
 
-    [self.viewArray addObject:(listViewController)];
-    [self.scrollView addSubview:listViewController.view];
+    //[self.viewArray addObject:(listViewController)];
+    //[self.scrollView addSubview:listViewController.view];
 
-    [listViewController.view setFrame:frame];
+    //[listViewController.view setFrame:frame];
    
    
     
@@ -109,6 +94,8 @@
 	
 	//self.scrollView.contentSize = CGSizeMake(960, 424);
 }
+
+
 
 -(BOOL)automaticallyAdjustsScrollViewInsets
 {

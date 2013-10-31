@@ -20,6 +20,6 @@
 @property (strong, nonatomic) UIImage* image;
 @property (strong, nonatomic) NSString* category;
 @property (strong, nonatomic) NSIndexPath *indexPath;
-@property (nonatomic) BOOL *imageFullSize;
+@property (nonatomic) BOOL imageFullSize;
 
 @end
