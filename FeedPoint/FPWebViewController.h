@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RSSItem.h"
+#import "FeedItem.h"
 
 @interface FPWebViewController : UIViewController <UIWebViewDelegate>{
     UIWebView *webView;
@@ -15,6 +15,6 @@
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) NSURL* link;
-@property (strong, nonatomic) RSSItem* item;
+@property (strong, nonatomic) FeedItem* item;
 
 @end

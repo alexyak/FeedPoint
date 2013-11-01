@@ -35,7 +35,7 @@
     //NSString *html = @"<html><body>HELLO FROM ME!!!</body></html>";
     //[self.webView loadHTMLString:html baseURL: nil];
     //NSURL *url = [NSURL URLWithString:@"http://www.bing.com"];
-    FeedData *currentItem = [self item];
+    FeedItem *currentItem = [self item];
     
     NSMutableString *html = [NSMutableString stringWithString:@"<html>" ];
     
@@ -52,16 +52,21 @@
     [html appendString:@"</style>"];
     [html appendString:@"</head>"];
     [html appendString:@"<body style='padding: 20px; font-family: Helvetica Neue; font-size: 30px;'>"];
-   // if (currentItem.link != nil)
-   //     [html appendFormat: @"<div id='title'><a href='%@'>%@</a></div>", currentItem.link.path, currentItem.title];
-   // else
-   //     [html appendFormat:@"<div id='title'>%@</div>", currentItem.title];
     
-  //  if (currentItem.author != nil)
-  //  {
-   //     [html appendFormat: @"<div id='Author'>%@</div>", currentItem.author];
-   // }
-   // [html appendFormat: @"<div id='date'>%@</div>", currentItem.pubDateFormatted];
+    if (currentItem.origin != nil)
+        [html appendFormat: @"<div id='title'><a href='%@'>%@</a></div>", currentItem.origin.htmlUrl, currentItem.title];
+    else
+        [html appendFormat:@"<div id='title'>%@</div>", currentItem.title];
+    
+    if (currentItem.author != nil)
+    {
+        [html appendFormat: @"<div id='Author'>%@</div>", currentItem.author];
+    }
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
+    
+   [html appendFormat: @"<div id='date'>%@</div>", [formatter stringFromDate:currentItem.published]];
     
     [html appendString:currentItem.description];
     [html appendString:@"</body>"];

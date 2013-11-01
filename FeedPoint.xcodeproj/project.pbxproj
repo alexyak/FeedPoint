@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F9132E0A180C3BB1002B2323 /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9132E09180C3BB1002B2323 /* image3.jpg */; };
+		06D4800E1820595800BC4C3C /* NoImageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D4800D1820595800BC4C3C /* NoImageTableCell.m */; };
+		06D48010182059DD00BC4C3C /* NoImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */; };
 		F9132E0E180C3F75002B2323 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E0C180C3F75002B2323 /* TodayViewController.m */; };
 		F9132E0F180C3F75002B2323 /* TodayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9132E0D180C3F75002B2323 /* TodayViewController.xib */; };
-		F9132E11180CAD3B002B2323 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = F9132E10180CAD3A002B2323 /* menu.png */; };
 		F9132E5918109AC1002B2323 /* TodayListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E5718109AC1002B2323 /* TodayListViewController.m */; };
 		F9132E5A18109AC1002B2323 /* TodayListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9132E5818109AC1002B2323 /* TodayListViewController.xib */; };
 		F9132E6318109DE9002B2323 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E6118109DE9002B2323 /* LoginViewController.m */; };
@@ -70,11 +70,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F9132E09180C3BB1002B2323 /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = image3.jpg; path = ../../../Downloads/Scrolling/image3.jpg; sourceTree = "<group>"; };
+		06D4800C1820595800BC4C3C /* NoImageTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoImageTableCell.h; sourceTree = "<group>"; };
+		06D4800D1820595800BC4C3C /* NoImageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoImageTableCell.m; sourceTree = "<group>"; };
+		06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoImageTableCell.xib; sourceTree = "<group>"; };
 		F9132E0B180C3F75002B2323 /* TodayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
 		F9132E0C180C3F75002B2323 /* TodayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
 		F9132E0D180C3F75002B2323 /* TodayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TodayViewController.xib; sourceTree = "<group>"; };
-		F9132E10180CAD3A002B2323 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../../../Downloads/menu.png; sourceTree = "<group>"; };
 		F9132E5618109AC1002B2323 /* TodayListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TodayListViewController.h; path = ../TodayListViewController.h; sourceTree = "<group>"; };
 		F9132E5718109AC1002B2323 /* TodayListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TodayListViewController.m; path = ../TodayListViewController.m; sourceTree = "<group>"; };
 		F9132E5818109AC1002B2323 /* TodayListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TodayListViewController.xib; path = ../TodayListViewController.xib; sourceTree = "<group>"; };
@@ -181,8 +182,6 @@
 		F9132E04180C3B44002B2323 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				F9132E10180CAD3A002B2323 /* menu.png */,
-				F9132E09180C3BB1002B2323 /* image3.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -265,6 +264,9 @@
 				F9132E6218109DE9002B2323 /* LoginViewController.xib */,
 				F9132E661810C397002B2323 /* URLParser.h */,
 				F9132E671810C397002B2323 /* URLParser.m */,
+				06D4800C1820595800BC4C3C /* NoImageTableCell.h */,
+				06D4800D1820595800BC4C3C /* NoImageTableCell.m */,
+				06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */,
 			);
 			path = FeedPoint;
 			sourceTree = "<group>";
@@ -424,13 +426,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9132E5A18109AC1002B2323 /* TodayListViewController.xib in Resources */,
-				F9132E0A180C3BB1002B2323 /* image3.jpg in Resources */,
+				06D48010182059DD00BC4C3C /* NoImageTableCell.xib in Resources */,
 				F9C7D1CC17F1F3BD005AB07F /* images in Resources */,
 				F9C7D1D117F20A46005AB07F /* FPWebViewController.xib in Resources */,
 				F9C7D1C817F1E86B005AB07F /* FPMainViewController.xib in Resources */,
 				F9C7D1D317F20DFE005AB07F /* FeedItemTableCell.xib in Resources */,
 				F9D00D7517FC5F9B00F53B74 /* PagingViewController.xib in Resources */,
-				F9132E11180CAD3B002B2323 /* menu.png in Resources */,
 				F9C7D19E17F1E633005AB07F /* InfoPlist.strings in Resources */,
 				F9C7D1A617F1E633005AB07F /* Images.xcassets in Resources */,
 				F9132E6418109DE9002B2323 /* LoginViewController.xib in Resources */,
@@ -461,6 +462,7 @@
 				F9132E681810C397002B2323 /* URLParser.m in Sources */,
 				F92A8DEC1811CCF200FD037E /* Category.m in Sources */,
 				F9B05706181B11FF00BD155A /* Token.m in Sources */,
+				06D4800E1820595800BC4C3C /* NoImageTableCell.m in Sources */,
 				F9132E6318109DE9002B2323 /* LoginViewController.m in Sources */,
 				F9C7D1C717F1E86B005AB07F /* FPMainViewController.m in Sources */,
 				F9132E0E180C3F75002B2323 /* TodayViewController.m in Sources */,
@@ -611,6 +613,7 @@
 				GCC_PREFIX_HEADER = "FeedPoint/FeedPoint-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"$(SDK_DIR)\"/usr/include/libxml2";
 				INFOPLIST_FILE = "FeedPoint/FeedPoint-Info.plist";
+				"OTHER_CFLAGS[arch=*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "C54AB2F4-76AC-4F5B-8E7A-AB0A2A17EA17";
 				WRAPPER_EXTENSION = app;

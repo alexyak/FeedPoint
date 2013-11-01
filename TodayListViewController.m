@@ -14,6 +14,8 @@
 #import "IconDownloader.h"
 #import "PagingViewController.h"
 #import "TodayViewController.h"
+#import "NoImageTableCell.h"
+#import "FPWebViewController.h"
 
 @interface TodayListViewController ()
 
@@ -77,6 +79,8 @@
                 feedData.title = item.title;
                 feedData.source = item.origin.title;
                 feedData.id = item.origin.streamId;
+                feedData.items = [[NSMutableArray alloc] init];
+                [feedData.items addObject:item];
                 
                 if (item.visual != nil)
                 {
@@ -186,63 +190,75 @@
     NSLog(@"didSelectRowAtIndexPath");
     
     
-    //FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    //RSSItem *item = [items objectAtIndex:indexPath.row];
-    //webView.item = item;
+    FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
+    FeedData *item = [items objectAtIndex:indexPath.row];
+    webView.item = [item.items objectAtIndex:0];
     
-    //UINavigationController *navController = [self navigationController];
+    UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
     
-    //UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
+    [navController pushViewController:webView animated:YES];
     
-    //[navController pushViewController:webView animated:YES];
-    
-    // Checked the selected row
-    //UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    
-    //[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"FeedItemTableCell";
+    static NSString *feedItemIdentifier = @"FeedItemTableCell";
+    static NSString *noImageIdentifier = @"NoImageTableCell";
     
     
-    FeedItemTableCell *cell = (FeedItemTableCell*)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    //FeedItemTableCell *cell = [tableView dequeueReusableCellWithIdentifier:noImageIdentifier];
     
-    if (cell == nil) {
+    FeedItemTableCell * cell;
+    
+    //NoImageTableCell *cell = (NoImageTableCell*)[tableView dequeueReusableCellWithIdentifier:noImageIdentifier];
+    
+    //FeedItemTableCell *cell = (FeedItemTableCell*)[tableView dequeueReusableCellWithIdentifier:feedItemIdentifier];
+    
+    
+    //if (cell == nil) {
         
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FeedItemTableCell" owner:self options:nil ];
-        
-        
-        cell = [nib objectAtIndex:0 ];
-    }
+       // NSArray *nib = [[NSBundle mainBundle] loadNibNamed:noImageIdentifier owner:self options:nil ];
+       // cell = [nib objectAtIndex:0 ];
+    //}
     
     if (items.count > 0)
     {
         
         FeedData *feedItem = [items objectAtIndex:indexPath.row];
         
-        cell.titleLabel.text = feedItem.title;
-        cell.nameLabel.text = feedItem.source;
-        
-        cell.updatedDateLabel.text = feedItem.updated;
         
         if (!feedItem.image)
         {
+            //cell = [tableView dequeueReusableCellWithIdentifier:noImageIdentifier];
+            
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:noImageIdentifier owner:self options:nil ];
+            cell = [nib objectAtIndex:0 ];
+            
             if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
             {
                 [self startIconDownload:feedItem forIndexPath:indexPath];
             }
             // if a download is deferred or in progress, return a placeholder image
-            //cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+            cell.imageView.hidden = YES;
         }
         else
         {
+            //cell = [tableView dequeueReusableCellWithIdentifier:feedItemIdentifier];
+            
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:feedItemIdentifier owner:self options:nil ];
+            cell = [nib objectAtIndex:0 ];
+            
             cell.imageView.image = feedItem.image;
             cell.imageView.clipsToBounds = YES;
         }
+        
+        cell.titleLabel.text = feedItem.title;
+        [cell.titleLabel sizeToFit];
+        cell.nameLabel.text = feedItem.source;
+        cell.updatedDateLabel.text = feedItem.updated;
+        
 
 
     }
@@ -316,10 +332,12 @@
         iconDownloader.appRecord = appRecord;
         [iconDownloader setCompletionHandler:^(IconDownloader *instance){
             
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
+            //FeedItemTableCell *cell = (FeedItemTableCell*)[self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
             
+            //[self.tableView reloadRowsAtIndexPaths:indexPath withRowAnimation:UITableViewRowAnimationNone]; //or left
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             // Display the newly loaded image
-            cell.imageView.image = instance.appRecord.image;
+            //cell.imageView.image = instance.appRecord.image;
             
             // Remove the IconDownloader from the in progress list.
             // This will result in it being deallocated.

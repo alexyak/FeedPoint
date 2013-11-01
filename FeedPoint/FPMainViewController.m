@@ -282,6 +282,9 @@
     // Release any retained subviews of the main view.
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"Mark Unread";
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -301,16 +304,8 @@
     if (items.count > 0)
     {
         currentSection = section;
-        //NSArray *keyArray =  [feedGroups allKeys];
-        //FeedGroup *group = [feedGroups objectForKey:[ keyArray objectAtIndex:section]];
-        
-        //[folders objectForKey:[ keyArray objectAtIndex:i]];
-        
         FeedGroup *group = [items objectAtIndex:section];
-        
         sectionName = group.title;
-        //return item.items.count;
-        
     }
     
     return sectionName;
@@ -352,8 +347,8 @@
     
     
     FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    RSSItem *item = [items objectAtIndex:indexPath.row];
-    webView.item = item;
+    //FeedData *item = [items objectAtIndex:indexPath.row];
+    //webView.item = item;
     
     //UINavigationController *navController = [self navigationController];
     
@@ -423,7 +418,12 @@
             cell.imageView.image = feedItem.image;
             
             cell.showImage = NO;
-
+            
+            
+            //[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight]; //or left
+            
+            
+            
             //cell.titleLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
             //cell.nameLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
             //cell.updatedDateLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
@@ -521,10 +521,10 @@
         iconDownloader.appRecord = appRecord;
         [iconDownloader setCompletionHandler:^(IconDownloader *instance){
             
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
-            
+            //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             // Display the newly loaded image
-            cell.imageView.image = instance.appRecord.image;
+            //cell.imageView.image = instance.appRecord.image;
             
             // Remove the IconDownloader from the in progress list.
             // This will result in it being deallocated.
