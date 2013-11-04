@@ -51,8 +51,8 @@
 #import "IconDownloader.h"
 #import "FeedData.h"
 
-#define kAppIconWidth 89
-#define kAppIconHeight 69
+#define kAppIconWidth 84
+#define kAppIconHeight 62
 
 @interface IconDownloader ()
 @property (nonatomic, strong) NSMutableData *activeDownload;

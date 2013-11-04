@@ -17,8 +17,10 @@
 
 @property (nonatomic, retain) IBOutlet UIScrollView* scrollView;
 @property (nonatomic, retain) IBOutlet UIPageControl* pageControl;
+@property (nonatomic, retain) IBOutlet UIToolbar* toolbar;
 @property (nonatomic, strong) NSArray *imageArray;
 @property (nonatomic, strong) NSMutableArray *viewArray;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* menuButton;
 //@property (nonatomic, strong) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)changePage;

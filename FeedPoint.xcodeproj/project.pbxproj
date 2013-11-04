@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06D4800E1820595800BC4C3C /* NoImageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 06D4800D1820595800BC4C3C /* NoImageTableCell.m */; };
-		06D48010182059DD00BC4C3C /* NoImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */; };
 		F9132E0E180C3F75002B2323 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E0C180C3F75002B2323 /* TodayViewController.m */; };
 		F9132E0F180C3F75002B2323 /* TodayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9132E0D180C3F75002B2323 /* TodayViewController.xib */; };
 		F9132E5918109AC1002B2323 /* TodayListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9132E5718109AC1002B2323 /* TodayListViewController.m */; };
@@ -29,6 +27,18 @@
 		F92A8E0418149D8700FD037E /* Origin.m in Sources */ = {isa = PBXBuildFile; fileRef = F92A8E0318149D8700FD037E /* Origin.m */; };
 		F92A8E0718149FED00FD037E /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = F92A8E0618149FED00FD037E /* Feed.m */; };
 		F92A8E0A1814A96A00FD037E /* Visual.m in Sources */ = {isa = PBXBuildFile; fileRef = F92A8E091814A96A00FD037E /* Visual.m */; };
+		F96BA59F1823E375003507B8 /* NoImageTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F96BA59D1823E375003507B8 /* NoImageTableCell.m */; };
+		F96BA5A01823E375003507B8 /* NoImageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F96BA59E1823E375003507B8 /* NoImageTableCell.xib */; };
+		F96BA5B318240F25003507B8 /* IonIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = F96BA5AF18240F25003507B8 /* IonIcons.m */; };
+		F96BA5B418240F25003507B8 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F96BA5B018240F25003507B8 /* ionicons.ttf */; };
+		F96BA5B518240F25003507B8 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F96BA5B118240F25003507B8 /* LICENSE */; };
+		F96BA5B618240F25003507B8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F96BA5B218240F25003507B8 /* README.md */; };
+		F9AE7F2C1826B5A400DE14A7 /* FeedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9AE7F2A1826B5A400DE14A7 /* FeedListViewController.m */; };
+		F9AE7F2D1826B5A400DE14A7 /* FeedListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9AE7F2B1826B5A400DE14A7 /* FeedListViewController.xib */; };
+		F9AE7F311826FF4700DE14A7 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9AE7F2F1826FF4700DE14A7 /* WebViewController.m */; };
+		F9AE7F321826FF4700DE14A7 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9AE7F301826FF4700DE14A7 /* WebViewController.xib */; };
+		F9AE7F361827035D00DE14A7 /* WebViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9AE7F341827035D00DE14A7 /* WebViewCell.m */; };
+		F9AE7F371827035D00DE14A7 /* WebViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9AE7F351827035D00DE14A7 /* WebViewCell.xib */; };
 		F9B05706181B11FF00BD155A /* Token.m in Sources */ = {isa = PBXBuildFile; fileRef = F9B05705181B11FF00BD155A /* Token.m */; };
 		F9C7D19417F1E633005AB07F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C7D19317F1E633005AB07F /* Foundation.framework */; };
 		F9C7D19617F1E633005AB07F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C7D19517F1E633005AB07F /* CoreGraphics.framework */; };
@@ -44,7 +54,6 @@
 		F9C7D1B917F1E633005AB07F /* FeedPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9C7D1B817F1E633005AB07F /* FeedPointTests.m */; };
 		F9C7D1C717F1E86B005AB07F /* FPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9C7D1C517F1E86B005AB07F /* FPMainViewController.m */; };
 		F9C7D1C817F1E86B005AB07F /* FPMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9C7D1C617F1E86B005AB07F /* FPMainViewController.xib */; };
-		F9C7D1CC17F1F3BD005AB07F /* images in Resources */ = {isa = PBXBuildFile; fileRef = F9C7D1CB17F1F3BD005AB07F /* images */; };
 		F9C7D1D017F20A46005AB07F /* FPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9C7D1CE17F20A46005AB07F /* FPWebViewController.m */; };
 		F9C7D1D117F20A46005AB07F /* FPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9C7D1CF17F20A46005AB07F /* FPWebViewController.xib */; };
 		F9C7D1D317F20DFE005AB07F /* FeedItemTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9C7D1D217F20DFE005AB07F /* FeedItemTableCell.xib */; };
@@ -70,9 +79,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		06D4800C1820595800BC4C3C /* NoImageTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoImageTableCell.h; sourceTree = "<group>"; };
-		06D4800D1820595800BC4C3C /* NoImageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoImageTableCell.m; sourceTree = "<group>"; };
-		06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoImageTableCell.xib; sourceTree = "<group>"; };
 		F9132E0B180C3F75002B2323 /* TodayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
 		F9132E0C180C3F75002B2323 /* TodayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
 		F9132E0D180C3F75002B2323 /* TodayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TodayViewController.xib; sourceTree = "<group>"; };
@@ -110,6 +116,24 @@
 		F92A8E0618149FED00FD037E /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
 		F92A8E081814A96A00FD037E /* Visual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Visual.h; sourceTree = "<group>"; };
 		F92A8E091814A96A00FD037E /* Visual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Visual.m; sourceTree = "<group>"; };
+		F96BA59C1823E375003507B8 /* NoImageTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoImageTableCell.h; sourceTree = "<group>"; };
+		F96BA59D1823E375003507B8 /* NoImageTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoImageTableCell.m; sourceTree = "<group>"; };
+		F96BA59E1823E375003507B8 /* NoImageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoImageTableCell.xib; sourceTree = "<group>"; };
+		F96BA5AD18240F25003507B8 /* ionicons-codes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ionicons-codes.h"; sourceTree = "<group>"; };
+		F96BA5AE18240F25003507B8 /* IonIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IonIcons.h; sourceTree = "<group>"; };
+		F96BA5AF18240F25003507B8 /* IonIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IonIcons.m; sourceTree = "<group>"; };
+		F96BA5B018240F25003507B8 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
+		F96BA5B118240F25003507B8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		F96BA5B218240F25003507B8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		F9AE7F291826B5A400DE14A7 /* FeedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedListViewController.h; sourceTree = "<group>"; };
+		F9AE7F2A1826B5A400DE14A7 /* FeedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedListViewController.m; sourceTree = "<group>"; };
+		F9AE7F2B1826B5A400DE14A7 /* FeedListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedListViewController.xib; sourceTree = "<group>"; };
+		F9AE7F2E1826FF4700DE14A7 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		F9AE7F2F1826FF4700DE14A7 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		F9AE7F301826FF4700DE14A7 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
+		F9AE7F331827035D00DE14A7 /* WebViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewCell.h; sourceTree = "<group>"; };
+		F9AE7F341827035D00DE14A7 /* WebViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewCell.m; sourceTree = "<group>"; };
+		F9AE7F351827035D00DE14A7 /* WebViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewCell.xib; sourceTree = "<group>"; };
 		F9B05704181B11FF00BD155A /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		F9B05705181B11FF00BD155A /* Token.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Token.m; sourceTree = "<group>"; };
 		F9C7D19017F1E633005AB07F /* FeedPoint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedPoint.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,7 +155,6 @@
 		F9C7D1C417F1E86B005AB07F /* FPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMainViewController.h; sourceTree = "<group>"; };
 		F9C7D1C517F1E86B005AB07F /* FPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMainViewController.m; sourceTree = "<group>"; };
 		F9C7D1C617F1E86B005AB07F /* FPMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FPMainViewController.xib; sourceTree = "<group>"; };
-		F9C7D1CB17F1F3BD005AB07F /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		F9C7D1CD17F20A46005AB07F /* FPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPWebViewController.h; sourceTree = "<group>"; };
 		F9C7D1CE17F20A46005AB07F /* FPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPWebViewController.m; sourceTree = "<group>"; };
 		F9C7D1CF17F20A46005AB07F /* FPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FPWebViewController.xib; sourceTree = "<group>"; };
@@ -195,6 +218,19 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		F96BA5AC18240F0A003507B8 /* ionicons */ = {
+			isa = PBXGroup;
+			children = (
+				F96BA5AD18240F25003507B8 /* ionicons-codes.h */,
+				F96BA5AE18240F25003507B8 /* IonIcons.h */,
+				F96BA5AF18240F25003507B8 /* IonIcons.m */,
+				F96BA5B018240F25003507B8 /* ionicons.ttf */,
+				F96BA5B118240F25003507B8 /* LICENSE */,
+				F96BA5B218240F25003507B8 /* README.md */,
+			);
+			name = ionicons;
+			sourceTree = "<group>";
+		};
 		F9C7D18717F1E633005AB07F = {
 			isa = PBXGroup;
 			children = (
@@ -230,11 +266,14 @@
 		F9C7D19917F1E633005AB07F /* FeedPoint */ = {
 			isa = PBXGroup;
 			children = (
+				F96BA5AC18240F0A003507B8 /* ionicons */,
+				F96BA59C1823E375003507B8 /* NoImageTableCell.h */,
+				F96BA59D1823E375003507B8 /* NoImageTableCell.m */,
+				F96BA59E1823E375003507B8 /* NoImageTableCell.xib */,
 				F9132E651810C338002B2323 /* Helpers */,
 				F9132E04180C3B44002B2323 /* Images */,
 				F9E1847B17F9D54A00CF1226 /* RXML */,
 				F9E1847717F326D100CF1226 /* DataModel */,
-				F9C7D1CB17F1F3BD005AB07F /* images */,
 				F9C7D1A217F1E633005AB07F /* FeedPointAppDelegate.h */,
 				F9C7D1A317F1E633005AB07F /* FeedPointAppDelegate.m */,
 				F9C7D1A517F1E633005AB07F /* Images.xcassets */,
@@ -264,9 +303,15 @@
 				F9132E6218109DE9002B2323 /* LoginViewController.xib */,
 				F9132E661810C397002B2323 /* URLParser.h */,
 				F9132E671810C397002B2323 /* URLParser.m */,
-				06D4800C1820595800BC4C3C /* NoImageTableCell.h */,
-				06D4800D1820595800BC4C3C /* NoImageTableCell.m */,
-				06D4800F182059DD00BC4C3C /* NoImageTableCell.xib */,
+				F9AE7F291826B5A400DE14A7 /* FeedListViewController.h */,
+				F9AE7F2A1826B5A400DE14A7 /* FeedListViewController.m */,
+				F9AE7F2B1826B5A400DE14A7 /* FeedListViewController.xib */,
+				F9AE7F2E1826FF4700DE14A7 /* WebViewController.h */,
+				F9AE7F2F1826FF4700DE14A7 /* WebViewController.m */,
+				F9AE7F301826FF4700DE14A7 /* WebViewController.xib */,
+				F9AE7F331827035D00DE14A7 /* WebViewCell.h */,
+				F9AE7F341827035D00DE14A7 /* WebViewCell.m */,
+				F9AE7F351827035D00DE14A7 /* WebViewCell.xib */,
 			);
 			path = FeedPoint;
 			sourceTree = "<group>";
@@ -426,11 +471,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9132E5A18109AC1002B2323 /* TodayListViewController.xib in Resources */,
-				06D48010182059DD00BC4C3C /* NoImageTableCell.xib in Resources */,
-				F9C7D1CC17F1F3BD005AB07F /* images in Resources */,
+				F96BA5B418240F25003507B8 /* ionicons.ttf in Resources */,
+				F9AE7F2D1826B5A400DE14A7 /* FeedListViewController.xib in Resources */,
+				F9AE7F321826FF4700DE14A7 /* WebViewController.xib in Resources */,
+				F96BA5A01823E375003507B8 /* NoImageTableCell.xib in Resources */,
 				F9C7D1D117F20A46005AB07F /* FPWebViewController.xib in Resources */,
+				F96BA5B618240F25003507B8 /* README.md in Resources */,
 				F9C7D1C817F1E86B005AB07F /* FPMainViewController.xib in Resources */,
 				F9C7D1D317F20DFE005AB07F /* FeedItemTableCell.xib in Resources */,
+				F9AE7F371827035D00DE14A7 /* WebViewCell.xib in Resources */,
+				F96BA5B518240F25003507B8 /* LICENSE in Resources */,
 				F9D00D7517FC5F9B00F53B74 /* PagingViewController.xib in Resources */,
 				F9C7D19E17F1E633005AB07F /* InfoPlist.strings in Resources */,
 				F9C7D1A617F1E633005AB07F /* Images.xcassets in Resources */,
@@ -458,13 +508,17 @@
 				F92A8DF51813618800FD037E /* FeedData.m in Sources */,
 				F9E1848517F9FA8900CF1226 /* FeedItem.m in Sources */,
 				F9C7D1A017F1E633005AB07F /* main.m in Sources */,
+				F9AE7F2C1826B5A400DE14A7 /* FeedListViewController.m in Sources */,
 				F92A8E0418149D8700FD037E /* Origin.m in Sources */,
 				F9132E681810C397002B2323 /* URLParser.m in Sources */,
 				F92A8DEC1811CCF200FD037E /* Category.m in Sources */,
 				F9B05706181B11FF00BD155A /* Token.m in Sources */,
-				06D4800E1820595800BC4C3C /* NoImageTableCell.m in Sources */,
+				F96BA59F1823E375003507B8 /* NoImageTableCell.m in Sources */,
 				F9132E6318109DE9002B2323 /* LoginViewController.m in Sources */,
+				F9AE7F311826FF4700DE14A7 /* WebViewController.m in Sources */,
+				F9AE7F361827035D00DE14A7 /* WebViewCell.m in Sources */,
 				F9C7D1C717F1E86B005AB07F /* FPMainViewController.m in Sources */,
+				F96BA5B318240F25003507B8 /* IonIcons.m in Sources */,
 				F9132E0E180C3F75002B2323 /* TodayViewController.m in Sources */,
 				F9132E5918109AC1002B2323 /* TodayListViewController.m in Sources */,
 				F92A8DEF1813576500FD037E /* UnreadItems.m in Sources */,
@@ -613,7 +667,6 @@
 				GCC_PREFIX_HEADER = "FeedPoint/FeedPoint-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = "\"$(SDK_DIR)\"/usr/include/libxml2";
 				INFOPLIST_FILE = "FeedPoint/FeedPoint-Info.plist";
-				"OTHER_CFLAGS[arch=*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "C54AB2F4-76AC-4F5B-8E7A-AB0A2A17EA17";
 				WRAPPER_EXTENSION = app;

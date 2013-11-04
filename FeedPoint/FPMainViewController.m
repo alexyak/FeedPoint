@@ -21,6 +21,8 @@
 #import "FeedGroup.h"
 #import "FeedItem.h"
 #import "IconDownloader.h"
+#import "IonIcons.h"
+#import "FeedListViewController.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
@@ -84,9 +86,13 @@
         {
             FeedItem* item = (FeedItem*)[result.items objectAtIndex:0];
             
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
-            feedData.updated = [formatter stringFromDate:item.published];
+           // NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            //[formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
+            
+            NSString* updatedDate = [self setUpdatedDate:item.published];
+            updatedDate = [updatedDate stringByAppendingFormat:@" - %d unread items ", feedData.updatedCount];
+                           
+            feedData.updated = updatedDate;
             
             feedData.title = item.title;
             
@@ -210,13 +216,16 @@
                 [self setFeedImage:feedData];
                 [feedGroup.items addObject:feedData];
                 [items addObject:feedGroup];
+                feedGroup.updatedCount += feedData.updatedCount;
                 [feedGroups setObject:feedGroup forKey:feedData.category];
+                
                 
             }
             else
             {
                 FeedGroup *feedGroup = [feedGroups objectForKey:feedData.category];
                 [self setFeedImage:feedData];
+                feedGroup.updatedCount += feedData.updatedCount;
                 [feedGroup.items addObject:feedData];
                 //[items addObject:feedGroup];
             }
@@ -227,50 +236,84 @@
         }
     }
     
-    //[items initWithArray:[feedGroups allValues]];
-    
-    //UITableView* tableView = (UITableView*)self.view;
-    
-    [self.tableView reloadData ];
-     });
-   /*
-    NSMutableDictionary *folderTemp = [NSMutableDictionary dictionary];
-    
-    NSArray *keyArray =  [folders allKeys];
-    int count = [keyArray count];
-    for (int i=0; i < count; i++)
-    {
-        Folder *folder = [folders objectForKey:[ keyArray objectAtIndex:i]];
-        FeedGroup *feedGroup =[[FeedGroup alloc] init];
-        feedGroup.title = folder.name;
-        feedGroup.items = [[NSMutableArray alloc] init];
-        */
-    
-        /*
-        for(UnreadItem *unreadItem in unreadItems)
-        {
-            if (folder.item!= nil)
-            {
-                if ([folder.item.id caseInsensitiveCompare: unreadItem.id])
-                {
-                    FeedData *feedData = [[FeedData alloc] init];
-                    feedData.title = folder.item.title;
-                    feedData.id  = folder.item.id;
-                    feedData.updatedCount = unreadItem.count;
-                    
-                    if (feedData.updatedCount > 0){
-                        [feedGroup.items addObject:feedData];
-                    }
-                }
-            }
-        }
-         */
-        
-        
-    
-        //[feedGroup.items addObject:fe
-    //}
+     [self.tableView reloadData ];
+ });
 }
+
+-(NSString*)setUpdatedDate: (NSDate*) updatedDate
+{
+    NSDate *now = [NSDate date];
+    NSTimeInterval secondsBetween = [now timeIntervalSinceDate:updatedDate];
+    
+    int hours = secondsBetween / 3600;
+    int minutes = secondsBetween / 60;
+    int numberOfDays = secondsBetween / 86400;
+    
+    NSCalendar       *calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *updateDateComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:updatedDate];
+    
+    NSDate *updatedDateOnly = [calendar dateFromComponents:updateDateComponents];
+    
+    
+    NSDateComponents *nowComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:now];
+    
+    NSDate *nowDateOnly = [calendar dateFromComponents:nowComponents];
+    
+    if ([nowDateOnly isEqualToDate:updatedDateOnly])
+    {
+        if (hours == 0)
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i minutes ago)", minutes]];
+            return result;
+        }
+        else if (hours > 1)
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i hours ago)", hours]];
+            return result;
+        }
+        else
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i hour ago)", hours]];
+            return result;
+        }
+    }
+    else if (numberOfDays == 1)
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM dd, yyyy"];
+        NSString* result = [formatter stringFromDate:updatedDate];
+        
+        result = [result stringByAppendingString:@" (yesterday)"];
+        return result;
+    }
+    else
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM dd, yyyy"];
+        NSString* result = [formatter stringFromDate:updatedDate];
+        
+        result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i days ago)", numberOfDays]];
+        
+        return result;
+    }
+    
+    return @"";
+    
+}
+
 
 
 
@@ -282,9 +325,6 @@
     // Release any retained subviews of the main view.
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Mark Unread";
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -305,11 +345,14 @@
     {
         currentSection = section;
         FeedGroup *group = [items objectAtIndex:section];
+        
         sectionName = group.title;
+        sectionName = [sectionName stringByAppendingFormat:@" (%d)", group.updatedCount];
     }
     
     return sectionName;
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -347,8 +390,8 @@
     
     
     FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    //FeedData *item = [items objectAtIndex:indexPath.row];
-    //webView.item = item;
+    RSSItem *item = [items objectAtIndex:indexPath.row];
+    webView.item = item;
     
     //UINavigationController *navController = [self navigationController];
     
@@ -366,18 +409,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"FeedItemTableCell";
-    
-    //FeedItemTableCell *cell = (FeedItemTableCell*)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    static NSString *feedItemIdentifier = @"FeedItemTableCell";
+    static NSString *noImageIdentifier = @"NoImageTableCell";
     
     FeedItemTableCell *cell;
     
     //if (cell == nil) {
         
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FeedItemTableCell" owner:self options:nil ];
+        //NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FeedItemTableCell" owner:self options:nil ];
         
         
-        cell = [nib objectAtIndex:0 ];
+        //cell = [nib objectAtIndex:0 ];
     //}
     
     if (items.count > 0)
@@ -392,83 +434,184 @@
         
         FeedData *feedItem = [group.items objectAtIndex:[indexPath row]];
         
-        cell.titleLabel.text = feedItem.title;
-        cell.nameLabel.text = feedItem.source;
+        //cell.titleLabel.text = feedItem.title;
+        //cell.nameLabel.text = feedItem.source;
         
-        cell.updatedDateLabel.text = feedItem.updated;
+        //cell.updatedDateLabel.text = feedItem.updated;
         
        // NSString *identifier = [NSString stringWithFormat:@"Cell%d%d",[indexPath section], indexPath.row];
         
         // Only load cached images; defer new downloads until scrolling ends
         if (!feedItem.image)
         {
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:noImageIdentifier owner:self options:nil ];
+            cell = [nib objectAtIndex:0 ];
+            
             if (self.tableView.dragging == NO && self.tableView.decelerating == NO)
             {
                 [self startIconDownload:feedItem forIndexPath:indexPath];
             }
-            
-            cell.showImage = YES;
-            
-           
             // if a download is deferred or in progress, return a placeholder image
-            //cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+            cell.imageView.hidden = YES;
+
         }
         else
         {
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:feedItemIdentifier owner:self options:nil ];
+            cell = [nib objectAtIndex:0 ];
+            
             cell.imageView.image = feedItem.image;
-            
-            cell.showImage = NO;
-            
-            
-            //[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight]; //or left
-            
-            
-            
-            //cell.titleLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
-            //cell.nameLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
-            //cell.updatedDateLabel.bounds = CGRectMake(102, 7, cell.bounds.size.width - 109, cell.bounds.size.height - 10);
-            
-            //cell.imageView.bounds = CGRectMake(cell.imageView.bounds.origin.x, cell.imageView.bounds.origin.y, 89, 69);
-        }
-
-        
-        /*
-        if ([cachedImages valueForKey:identifier]) {
             cell.imageView.clipsToBounds = YES;
-            [[cell imageView] setImage:[cachedImages valueForKey:identifier]];
-        } else {
-            dispatch_async(kBgQueue, ^{
-                
-                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:feedItem.imageUrl]];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (![cachedImages valueForKey:identifier])
-                        {
-                            NSLog(@"inside dispatch %@", identifier);
-                            [cachedImages setValue:[UIImage imageWithData:imageData] forKey:identifier];
-                            cell.imageView.clipsToBounds = YES;
-                            [[cell imageView] setImage:[cachedImages valueForKey:identifier]];
-                            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        }
-                    });
-                
-                
-                
-                
-            });
         }
-       */
         
-        //cell.imageImageView.image = feedItem.image;
-        
-        //NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        //[formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
-        //cell.updatedDateLabel.text = feedItem.updated;
+        cell.titleLabel.text = feedItem.title;
+        [cell.titleLabel sizeToFit];
+        cell.nameLabel.text = feedItem.source;
+        cell.updatedDateLabel.text = feedItem.updated;
         
     }
    
     return cell;
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 24.0;
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 26)];
+	tableView.sectionHeaderHeight = headerView.frame.size.height;
+    
+    UILabel *parentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width  , 26)];
+    
+    parentLabel.backgroundColor = [[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0];
+    
+	//UIButton *label = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, headerView.frame.size.width, 26)];
+    
+    NSString *sectionName = [self tableView:tableView titleForHeaderInSection:section];
+    sectionName = [sectionName stringByAppendingString:@"  "];
+
+    
+    UIButton* infoButton = [UIButton buttonWithType: UIButtonTypeSystem];
+    infoButton.frame = CGRectMake(10, 0, headerView.frame.size.width, 26); // x,y,width,height
+    
+    [infoButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    
+   
+    
+    infoButton.enabled = YES;
+    infoButton.tag = section;
+    
+    [infoButton setTitle:sectionName forState: UIControlStateNormal];
+    [infoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [infoButton addTarget:self action:@selector(sectionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+	infoButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    infoButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+	infoButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    UILabel* chevronLabel = [IonIcons labelWithIcon:icon_ios7_arrow_forward size: 22 color: [UIColor whiteColor]];
+    
+    CGFloat titleWidth = [self widthOfString:sectionName withFont:infoButton.titleLabel.font];
+    
+    
+    
+    //CGSize* titleSize = [sectionName sizeWithFont:infoButton.titleLabel.font
+    //                              forWidth:headerView.frame.size.width - 30
+     //                                 lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    [chevronLabel setFrame:CGRectMake(titleWidth, 0, 26, 26)];
+    
+    
+    tableView.backgroundColor = [[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0];
+
+    //label.textAlignment = NSTextAlignmentCenter;
+    //CGPointMake(tableView.center.x, ctv.center.y);
+    //[parentLabel addSubview:infoButton];
+    
+    [headerView addSubview:parentLabel];
+	[headerView addSubview:infoButton];
+    [headerView addSubview:chevronLabel];
+    
+	return headerView;
+}
+
+- (CGFloat)widthOfString:(NSString *)string withFont:(UIFont *)font {
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil];
+    return [[[NSAttributedString alloc] initWithString:string attributes:attributes] size].width;
+}
+
+- (IBAction)sectionButtonClicked: (id)sender{
+    
+    FeedListViewController * feedList = [[FeedListViewController alloc] init];
+    UIButton* button = (UIButton*)sender;
+    
+    FeedGroup *group = [items objectAtIndex:button.tag];
+    
+    feedList.feedData = [group.items objectAtIndex:0];
+    
+    UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
+    
+    [navController pushViewController:feedList animated:YES];
+    
+    //UIAlertView *messageAlert = [[UIAlertView alloc]
+      //                           initWithTitle:@"Row Selected" message:@"Button Clicked" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    
+    //[messageAlert show];
+    
+    //   UIAlertView *messageAlert = [[UIAlertView alloc]
+    //;                               initWithTitle:@"Row Selected" message:[tableData objectAtIndex:indexPath.row] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    
+}
+
+                      /*
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    NSString *sectionName;
+    
+    if (items.count > 0)
+    {
+        currentSection = section;
+        FeedGroup *group = [items objectAtIndex:section];
+        sectionName = group.title;
+        sectionName = [sectionName stringByAppendingString:@">"];
+    }
+
+    
+    // Create a custom title view.
+    UIView *ctv;
+    UILabel *titleLabel;
+    
+    // Set the name.
+    //{...} // Code not relevant
+    
+    ctv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 640, 80)];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 640, 80)];
+    
+    titleLabel.text = @"Header >";
+    titleLabel.tintColor = [UIColor blackColor];
+    
+    ctv.backgroundColor = [[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0];
+    //ctv.tintColor = [UIColor whiteColor];
+    // Config the label.
+    //{...} // Code not relevant
+    
+    // Center the items.
+    ctv.center = CGPointMake(tableView.center.x, ctv.center.y);
+    titleLabel.center = ctv.center;
+    
+    // Add the label to the container view.
+    [ctv addSubview:titleLabel];
+    
+    // Return the custom title view.
+    return ctv;
+    
+}
+
+*/
+                      
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate)
@@ -522,9 +665,10 @@
         [iconDownloader setCompletionHandler:^(IconDownloader *instance){
             
             //UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            
             // Display the newly loaded image
             //cell.imageView.image = instance.appRecord.image;
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             
             // Remove the IconDownloader from the in progress list.
             // This will result in it being deallocated.

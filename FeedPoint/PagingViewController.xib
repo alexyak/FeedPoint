@@ -6,8 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PagingViewController">
             <connections>
+                <outlet property="menuButton" destination="tDg-8p-Tcc" id="Mui-na-YHJ"/>
                 <outlet property="pageControl" destination="nN5-nN-Iag" id="20c-Ng-opR"/>
                 <outlet property="scrollView" destination="8Fb-Nz-3U1" id="oNL-XZ-b9x"/>
+                <outlet property="toolbar" destination="3Iy-8p-H89" id="pm8-Ee-TX7"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -20,14 +22,24 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </scrollView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Iy-8p-H89">
+                    <rect key="frame" x="0.0" y="526" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem systemItem="flexibleSpace" id="W1J-dk-1Za"/>
+                        <barButtonItem title="Item" id="tDg-8p-Tcc"/>
+                    </items>
+                </toolbar>
                 <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="nN5-nN-Iag">
                     <rect key="frame" x="141" y="531" width="39" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="0.12156863510608673" green="0.44705885648727417" blue="0.90588241815567017" alpha="1" colorSpace="deviceRGB"/>
                     <color key="pageIndicatorTintColor" red="0.097585319490000003" green="0.47619086170000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="currentPageIndicatorTintColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                 </pageControl>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+            <color key="tintColor" red="0.094117656350135803" green="0.35294118523597717" blue="0.88235300779342651" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

@@ -14,8 +14,8 @@
 #import "IconDownloader.h"
 #import "PagingViewController.h"
 #import "TodayViewController.h"
-#import "NoImageTableCell.h"
 #import "FPWebViewController.h"
+#import "WebViewController.h"
 
 @interface TodayListViewController ()
 
@@ -74,7 +74,7 @@
                 
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
-                feedData.updated = [formatter stringFromDate:item.published];
+                feedData.updated = [self setUpdatedDate:item.published];
                 
                 feedData.title = item.title;
                 feedData.source = item.origin.title;
@@ -119,10 +119,81 @@
             
         }
         
-        
     }];
     
+}
+
+-(NSString*)setUpdatedDate: (NSDate*) updatedDate
+{
+    NSDate *now = [NSDate date];
+    NSTimeInterval secondsBetween = [now timeIntervalSinceDate:updatedDate];
     
+    int hours = secondsBetween / 3600;
+    int minutes = secondsBetween / 60;
+    int numberOfDays = secondsBetween / 86400;
+    
+    NSCalendar       *calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *updateDateComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:updatedDate];
+
+    NSDate *updatedDateOnly = [calendar dateFromComponents:updateDateComponents];
+    
+    
+    NSDateComponents *nowComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:now];
+    
+    NSDate *nowDateOnly = [calendar dateFromComponents:nowComponents];
+    
+    if ([nowDateOnly isEqualToDate:updatedDateOnly])
+    {
+        if (hours == 0)
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i minutes ago)", minutes]];
+            return result;
+        }
+        else if (hours > 1)
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i hours ago)", hours]];
+            return result;
+        }
+        else
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString* result = [formatter stringFromDate:updatedDate];
+            
+            result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i hour ago)", hours]];
+            return result;
+        }
+    }
+    else if (numberOfDays == 1)
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM dd, yyyy"];
+        NSString* result = [formatter stringFromDate:updatedDate];
+        
+        result = [result stringByAppendingString:@" (yesterday)"];
+        return result;
+    }
+    else
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM dd, yyyy"];
+        NSString* result = [formatter stringFromDate:updatedDate];
+        
+        result = [result stringByAppendingString:[NSString stringWithFormat:@" (%i days ago)", numberOfDays]];
+        
+        return result;
+    }
+    
+    return @"";
     
 }
 
@@ -190,38 +261,38 @@
     NSLog(@"didSelectRowAtIndexPath");
     
     
-    FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
+    //FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
+    //FeedData *item = [items objectAtIndex:indexPath.row];
+    //webView.item = [item.items objectAtIndex:0];
+    
+   // UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
+    
+   // [navController pushViewController:webView animated:YES];
+    
+   // [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+    WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
     FeedData *item = [items objectAtIndex:indexPath.row];
-    webView.item = [item.items objectAtIndex:0];
+    webViewController.dataArray = items;
     
     UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
     
-    [navController pushViewController:webView animated:YES];
+    [navController pushViewController:webViewController animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *feedItemIdentifier = @"FeedItemTableCell";
     static NSString *noImageIdentifier = @"NoImageTableCell";
     
-    
-    //FeedItemTableCell *cell = [tableView dequeueReusableCellWithIdentifier:noImageIdentifier];
-    
     FeedItemTableCell * cell;
-    
-    //NoImageTableCell *cell = (NoImageTableCell*)[tableView dequeueReusableCellWithIdentifier:noImageIdentifier];
-    
-    //FeedItemTableCell *cell = (FeedItemTableCell*)[tableView dequeueReusableCellWithIdentifier:feedItemIdentifier];
-    
-    
-    //if (cell == nil) {
-        
-       // NSArray *nib = [[NSBundle mainBundle] loadNibNamed:noImageIdentifier owner:self options:nil ];
-       // cell = [nib objectAtIndex:0 ];
-    //}
     
     if (items.count > 0)
     {
@@ -259,15 +330,11 @@
         cell.nameLabel.text = feedItem.source;
         cell.updatedDateLabel.text = feedItem.updated;
         
-
-
     }
     
     
-    //cell.imageImageView.image = [UIImage imageNamed:[thumbnails objectAtIndex:indexPath.row]];
-    
-   // cell.updatedDateLabel.text = item.pubDateFormatted;
     return cell;
+
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -307,6 +374,8 @@
             //FeedGroup *group = [items objectAtIndex:[indexPath section]];
             FeedData *feedItem = [items objectAtIndex:[indexPath row]];
             
+              // [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            
             if (!feedItem.image)
                 // Avoid the app icon download if the app already has an icon
             {
@@ -332,13 +401,12 @@
         iconDownloader.appRecord = appRecord;
         [iconDownloader setCompletionHandler:^(IconDownloader *instance){
             
-            //FeedItemTableCell *cell = (FeedItemTableCell*)[self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
+           // UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:instance.appRecord.indexPath];
             
-            //[self.tableView reloadRowsAtIndexPaths:indexPath withRowAnimation:UITableViewRowAnimationNone]; //or left
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             // Display the newly loaded image
             //cell.imageView.image = instance.appRecord.image;
             
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];  
             // Remove the IconDownloader from the in progress list.
             // This will result in it being deallocated.
             [self.imageDownloadsInProgress removeObjectForKey:instance.appRecord.indexPath];

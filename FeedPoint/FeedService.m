@@ -267,6 +267,8 @@
         feedStream.id = [json objectForKey:@"id"];
         feedStream.title = [json objectForKey:@"title"];
         
+        feedStream.continuation = [json objectForKey:@"continuation"];
+        
         feedStream.alternate = [[NSMutableArray alloc]init];
         feedStream.items = [[NSMutableArray alloc]init];
         

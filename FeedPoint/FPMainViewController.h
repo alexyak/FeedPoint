@@ -21,6 +21,10 @@
 
 -(NSArray*) getImagesInHTML: (NSString*) html;
 
+- (IBAction)sectionButtonClicked: (id)sender;
+
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+
+
 
 @end

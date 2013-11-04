@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) NSString* title;
 @property (strong, nonatomic) NSMutableArray* items;
+@property (nonatomic, assign) int updatedCount;
 
 @end
