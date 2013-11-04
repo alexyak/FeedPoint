@@ -66,6 +66,16 @@
                                  imageSize:CGSizeMake(30.0f, 30.0f)];
     
     
+    //UIBarButtonItem *button = self.settingsButton;
+    
+    self.settingsButton.image = [IonIcons imageWithIcon:icon_ios7_gear_outline
+                                 iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                  iconSize:30.0f
+                                 imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    [self.settingsButton setTitle: @"Settings"];
+    
+    
         //[button
      
      
@@ -160,8 +170,14 @@
         }
         else if (self.pageControl.currentPage == 2)
         {
-            [self.navigationItem setTitle:@"Folders"];
-            self.toolbar.hidden = YES;
+            [self.navigationItem setTitle:@"Categories"];
+            self.toolbar.hidden = NO;
+        }
+        else if (self.pageControl.currentPage == 3)
+        {
+            [self.navigationItem setTitle:@"Uncategorized"];
+             self.toolbar.hidden = NO;
+            
         }
         
     }

@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray *imageArray;
 @property (nonatomic, strong) NSMutableArray *viewArray;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem* menuButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* settingsButton;
 //@property (nonatomic, strong) IBOutlet UINavigationBar *navigationBar;
 
 - (IBAction)changePage;

@@ -311,7 +311,6 @@
             {
                 [self startIconDownload:feedItem forIndexPath:indexPath];
             }
-            // if a download is deferred or in progress, return a placeholder image
             cell.imageView.hidden = YES;
         }
         else
@@ -326,7 +325,14 @@
         }
         
         cell.titleLabel.text = feedItem.title;
-        [cell.titleLabel sizeToFit];
+        //CGFloat height = [self heightOfString:feedItem.title withFont:cell.titleLabel.font width: cell.titleLabel.bounds.size.width];
+        //NSLog(@"height: %f", height);
+        
+        //NSLog(@"original y: %f", cell.nameLabel.bounds.origin.y);
+        
+        //[cell.nameLabel setFrame:CGRectMake(cell.nameLabel.bounds.origin.x, cell.titleLabel.bounds.origin.y + height, cell.nameLabel.bounds.size.width, cell.nameLabel.bounds.size.height )];
+         
+        //[cell.titleLabel sizeToFit];
         cell.nameLabel.text = feedItem.source;
         cell.updatedDateLabel.text = feedItem.updated;
         
@@ -336,6 +342,8 @@
     return cell;
 
 }
+
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {

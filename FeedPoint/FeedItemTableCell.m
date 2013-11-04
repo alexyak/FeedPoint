@@ -18,36 +18,41 @@
 
 -(void)layoutSubviews
 {
-    if (!self.showImage)
-    {
-        //NSLog(@"before: %f", self.titleLabel.bounds.origin.x);
+    [super layoutSubviews];
     
-        //self.titleLabel.bounds = CGRectMake(0, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
+        CGFloat height = [self heightOfString:self.titleLabel.text withFont:self.titleLabel.font width: self.titleLabel.bounds.size.width];
+        NSLog(@"height: %f", height);
         
-       // NSLog(@"after: %f", self.titleLabel.bounds.origin.x);
+        NSLog(@"original y: %f", self.nameLabel.bounds.origin.y);
     
-        //self.nameLabel.bounds = CGRectMake(0, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
-        //self.updatedDateLabel.bounds = CGRectMake(0, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
-     
-        //self.imageView.hidden = YES;
-    }
-    else
-    {
-        //self.imageView.hidden = NO;
-    }
+        if (height < 20)
+        {
+            //if (self.showImage)
+                [self.nameLabel setFrame:CGRectMake(102, 32, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+            //else
+            //    [self.nameLabel setFrame:CGRectMake(10, 28, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+        }
+   
 }
 
--(id)initWithCoder:(NSCoder *)aDecoder
+
+- (CGFloat)heightOfString:(NSString *)text withFont:(UIFont *)font width: (int) width
 {
-    NSLog(@"initWithCoder");
-    
-    self = [super initWithCoder: aDecoder];
-    if (self)
-    {
-       
-    }
-    return self;
+    NSAttributedString *attributedText =
+    [[NSAttributedString alloc]
+     initWithString:text
+     attributes:@
+     {
+     NSFontAttributeName: font
+     }];
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){width, CGFLOAT_MAX}
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    CGSize size = rect.size;
+    return size.height;
 }
+
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

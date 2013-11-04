@@ -9,6 +9,7 @@
                 <outlet property="menuButton" destination="tDg-8p-Tcc" id="Mui-na-YHJ"/>
                 <outlet property="pageControl" destination="nN5-nN-Iag" id="20c-Ng-opR"/>
                 <outlet property="scrollView" destination="8Fb-Nz-3U1" id="oNL-XZ-b9x"/>
+                <outlet property="settingsButton" destination="sJD-Fk-1M4" id="DWd-CN-EjU"/>
                 <outlet property="toolbar" destination="3Iy-8p-H89" id="pm8-Ee-TX7"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -22,10 +23,11 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </scrollView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Iy-8p-H89">
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="60" translatesAutoresizingMaskIntoConstraints="NO" id="3Iy-8p-H89">
                     <rect key="frame" x="0.0" y="526" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
+                        <barButtonItem title="Item" id="sJD-Fk-1M4"/>
                         <barButtonItem systemItem="flexibleSpace" id="W1J-dk-1Za"/>
                         <barButtonItem title="Item" id="tDg-8p-Tcc"/>
                     </items>
