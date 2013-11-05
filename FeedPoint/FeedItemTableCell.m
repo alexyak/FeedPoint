@@ -27,11 +27,10 @@
     
         if (height < 20)
         {
-            //if (self.showImage)
-                [self.nameLabel setFrame:CGRectMake(102, 32, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
-            //else
-            //    [self.nameLabel setFrame:CGRectMake(10, 28, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+             //   [self.nameLabel setFrame:CGRectMake(102, 32, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
         }
+    
+    [self.titleLabel sizeToFit];
    
 }
 
