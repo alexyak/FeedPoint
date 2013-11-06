@@ -17,4 +17,10 @@
 
 @property (nonatomic, strong) NSMutableDictionary *imageDownloadsInProgress;
 
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* menuButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* backButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* forwardButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* markButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem* shareButton;
+
 @end

@@ -46,7 +46,7 @@
     
     FeedItem *currentItem = self.item;
     
-    
+    //[self.navigationItem setTitle:currentItem.origin.title];
     //[self.navigationItem setTitle:currentItem.origin.title];
     
     
@@ -61,7 +61,7 @@
     [html appendString:@"a {color:#006699; text-decoration: none} a:link{color:#006699;}"];
     [html appendString:@"</style>"];
     [html appendString:@"</head>"];
-    [html appendString:@"<body style='padding: 20px; font-family: Helvetica Neue; line-height: 1.5; font-size: 38px; word-wrap: break-word;clear: both;display: block;'>"];
+    [html appendString:@"<body style='padding: 20px; font-family: Helvetica Neue; line-height: 1.5; font-size: 3em !important; word-wrap: break-word;clear: both;display: block;'>"];
     if (currentItem.origin != nil)
         [html appendFormat: @"<div id='title'><a href='%@'>%@</a></div>", currentItem.origin.htmlUrl, currentItem.title];
     else

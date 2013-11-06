@@ -6,7 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebViewController">
             <connections>
+                <outlet property="backButton" destination="q0u-0s-ZiB" id="rSS-lb-QmF"/>
                 <outlet property="collectionView" destination="YWf-4N-fzx" id="fle-1Q-rfU"/>
+                <outlet property="forwardButton" destination="3ad-8G-DfU" id="02B-52-JmR"/>
+                <outlet property="markButton" destination="PbQ-Vm-0YQ" id="V06-3G-ANG"/>
+                <outlet property="menuButton" destination="owy-IO-xsY" id="bsf-tN-Vcx"/>
+                <outlet property="shareButton" destination="eu8-u0-gCa" id="1Qx-79-Dwl"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -31,11 +36,19 @@
                         <outlet property="delegate" destination="-1" id="3TJ-sH-IhV"/>
                     </connections>
                 </collectionView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h1P-6g-rtn">
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QTS-VR-hRd">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Item" id="2g2-kA-Pig"/>
+                        <barButtonItem title="Back" id="q0u-0s-ZiB"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WrB-1F-34c"/>
+                        <barButtonItem title="Forward" id="3ad-8G-DfU"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="D9W-0D-cVu"/>
+                        <barButtonItem title="Share" id="eu8-u0-gCa"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="UYp-Ig-dHU"/>
+                        <barButtonItem title="Mark" id="PbQ-Vm-0YQ"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5rU-x7-1RU"/>
+                        <barButtonItem title="Menu" style="plain" id="owy-IO-xsY"/>
                     </items>
                 </toolbar>
             </subviews>
