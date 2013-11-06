@@ -207,8 +207,14 @@
     }
     else if (self.pageControl.currentPage == 2)
     {
-        [self.navigationItem setTitle:@"Folders"];
+        [self.navigationItem setTitle:@"Categories"];
         self.toolbar.hidden = NO;
+    }
+    else if (self.pageControl.currentPage == 3)
+    {
+        [self.navigationItem setTitle:@"Uncategorized"];
+        self.toolbar.hidden = NO;
+        
     }
 
 }

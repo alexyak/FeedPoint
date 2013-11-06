@@ -25,9 +25,12 @@
         
         NSLog(@"original y: %f", self.nameLabel.bounds.origin.y);
     
-        if (height < 20)
+        if (height < 50)
         {
              //   [self.nameLabel setFrame:CGRectMake(102, 32, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+            [self.nameLabel setFrame:CGRectMake(102, height + 20, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+            //else
+            [self.updatedDateLabel setFrame:CGRectMake(102, height + 4, self.updatedDateLabel.bounds.size.width, self.updatedDateLabel.bounds.size.height )];
         }
     
     [self.titleLabel sizeToFit];

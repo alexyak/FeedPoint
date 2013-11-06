@@ -38,12 +38,18 @@
     
     NSLog(@"original y: %f", self.nameLabel.bounds.origin.y);
     
-    if (height <= 20)
+    if (height <= 50)
     {
-        //if (self.showImage)
-        //    [self.nameLabel setFrame:CGRectMake(102, 30, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
-        //else
-            [self.nameLabel setFrame:CGRectMake(10, 32, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+        if (height > 18)
+            [self.titleLabel setFrame:CGRectMake(10, self.titleLabel.bounds.origin.y - height / 3 + 6, self.titleLabel.bounds.size.width, self.titleLabel.bounds.size.height)];
+        else
+             [self.titleLabel setFrame:CGRectMake(10, self.titleLabel.bounds.origin.y - height + 2, self.titleLabel.bounds.size.width, self.titleLabel.bounds.size.height)];
+        
+        [self.nameLabel setFrame:CGRectMake(10, height + 22, self.nameLabel.bounds.size.width, self.nameLabel.bounds.size.height )];
+
+        [self.updatedDateLabel setFrame:CGRectMake(10, height + 4, self.updatedDateLabel.bounds.size.width, self.updatedDateLabel.bounds.size.height )];
+        
+        
     }
     
 }
