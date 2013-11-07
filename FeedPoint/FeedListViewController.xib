@@ -6,6 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FeedListViewController">
             <connections>
+                <outlet property="backButton" destination="B4O-5E-L01" id="rYe-Ef-rlw"/>
+                <outlet property="forwardButton" destination="vVR-U2-8WU" id="qib-dT-kGB"/>
+                <outlet property="markButton" destination="GT3-6C-kWm" id="cFf-gH-BrJ"/>
+                <outlet property="menuButton" destination="gJe-Ke-4y8" id="AOe-P0-gCh"/>
+                <outlet property="shareButton" destination="fdH-JQ-3oZ" id="bxS-3y-5hu"/>
                 <outlet property="tableView" destination="bq0-bQ-fM2" id="Zgf-Xz-VxB"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>

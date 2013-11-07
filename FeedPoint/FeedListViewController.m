@@ -15,6 +15,7 @@
 #import "FeedItemTableCell.h"
 #import "NoImageTableCell.h"
 #import "FPWebViewController.h"
+#import "IonIcons.h"
 
 @interface FeedListViewController ()
 {
@@ -45,6 +46,46 @@
     [super viewDidLoad];
     app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
     items = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *menuButton = self.menuButton;
+    menuButton.image = [IonIcons imageWithIcon:icon_navicon
+                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                      iconSize:30.0f
+                                     imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    UIBarButtonItem *backButton = self.backButton;
+    backButton.image = [IonIcons imageWithIcon:icon_ios7_arrow_left
+                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                      iconSize:30.0f
+                                     imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    UIBarButtonItem *forwardButton = self.forwardButton;
+    forwardButton.image = [IonIcons imageWithIcon:icon_ios7_arrow_right
+                                        iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                         iconSize:30.0f
+                                        imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    UIBarButtonItem *markButton = self.markButton;
+    markButton.image = [IonIcons imageWithIcon:icon_ios7_checkmark_outline
+                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                      iconSize:30.0f
+                                     imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    UIBarButtonItem *shareButton = self.shareButton;
+    shareButton.image = [IonIcons imageWithIcon:icon_ios7_upload_outline
+                                      iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                       iconSize:30.0f
+                                      imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    [self.navigationItem setTitle:self.feedData.title];
+    
+    UIButton* fakeButton = (UIButton *) [[UIImageView alloc] initWithImage:[IonIcons imageWithIcon:icon_ios7_drag
+                                                                                         iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
+                                                                                          iconSize:30.0f
+                                                                                         imageSize:CGSizeMake(30.0f, 30.0f)]];
+    UIBarButtonItem *fakeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:fakeButton];
+    self.navigationItem.rightBarButtonItem = fakeButtonItem;
+
     
     if (app.feedService.AuthToken){
         
