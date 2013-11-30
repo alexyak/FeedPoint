@@ -68,21 +68,14 @@
 {
     self.activeDownload = [NSMutableData data];
     
-    
-     if (self.appRecord.imageUrl && [self.appRecord.imageUrl caseInsensitiveCompare:@"none"] != NSOrderedSame)
+    if (self.appRecord.imageUrl && [self.appRecord.imageUrl caseInsensitiveCompare:@"none"] != NSOrderedSame)
     {
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.appRecord.imageUrl]];
-        
-    
         NSLog(@"Is%@ main thread", ([NSThread isMainThread] ? @"":@" NOT"));
-        
         // alloc+init and start an NSURLConnection; release on completion/failure
         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        
         //[conn scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        
         //[conn start];
-    
         self.imageConnection = conn;
     }
 }

@@ -13,12 +13,15 @@
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 
-@property (nonatomic, retain) IBOutlet UILabel *label;
 
 @property (strong, nonatomic) FeedItem* item;
 
 @property (nonatomic, strong) NSString *title;
 
+@property (nonatomic, strong) NSString *html;
+
 -(void)updateCell;
+
+-(void) clear;
 
 @end

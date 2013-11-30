@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PagingScrollViewController">
+            <connections>
+                <outlet property="backButton" destination="0qp-hm-eYL" id="cOh-ke-y8q"/>
+                <outlet property="forwardButton" destination="wEw-kY-0Eb" id="tep-qc-q6S"/>
+                <outlet property="markButton" destination="e2a-Ij-q6g" id="lXm-lS-1aj"/>
+                <outlet property="scrollView" destination="Pag-En-2uv" id="Q9S-Vq-Z5m"/>
+                <outlet property="shareButton" destination="KBh-FA-6Yf" id="o4n-MW-5gg"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pag-En-2uv">
+                    <rect key="frame" x="0.0" y="62" width="320" height="462"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="XiV-Nx-aK8"/>
+                    </connections>
+                </scrollView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZM5-nM-kHX">
+                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem title="Back" id="0qp-hm-eYL">
+                            <connections>
+                                <action selector="backClicked:" destination="-1" id="tJL-WY-P8Y"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="7Zc-MX-Hb8"/>
+                        <barButtonItem title="Forward" id="wEw-kY-0Eb">
+                            <connections>
+                                <action selector="forwardClicked:" destination="-1" id="eTV-mv-LID"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="GeW-6A-F3t"/>
+                        <barButtonItem title="Share" id="KBh-FA-6Yf">
+                            <connections>
+                                <action selector="shareClicked:" destination="-1" id="Rgr-vU-kZi"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="EkM-TD-8LR"/>
+                        <barButtonItem title="Mark" id="e2a-Ij-q6g">
+                            <connections>
+                                <action selector="markAsUnreadClicked:" destination="-1" id="bHI-ob-r5Y"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

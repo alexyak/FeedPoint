@@ -21,8 +21,12 @@
 #import "FeedGroup.h"
 #import "FeedItem.h"
 #import "IconDownloader.h"
-#import "IonIcons.h"
+//#import "IonIcons.h"
 #import "FeedListViewController.h"
+#import "WebViewController.h"
+#import "PagingScrollViewController.h"
+#import "FAKIcon.h"
+#import "FAKIonIcons.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
@@ -213,7 +217,9 @@
                 FeedGroup *feedGroup = [[FeedGroup alloc] init];
                 feedGroup.title = feedData.category;
                 feedGroup.items = [[NSMutableArray alloc] init];
+                
                 [self setFeedImage:feedData];
+                
                 [feedGroup.items addObject:feedData];
                 [items addObject:feedGroup];
                 feedGroup.updatedCount += feedData.updatedCount;
@@ -224,7 +230,9 @@
             else
             {
                 FeedGroup *feedGroup = [feedGroups objectForKey:feedData.category];
+                
                 [self setFeedImage:feedData];
+                
                 feedGroup.updatedCount += feedData.updatedCount;
                 [feedGroup.items addObject:feedData];
                 //[items addObject:feedGroup];
@@ -232,11 +240,26 @@
         }
         else
         {
+             [self setFeedImage:feedData];
             [feedGroupUncategorized.items addObject:feedData];
         }
     }
     
-     [self.tableView reloadData ];
+         app.feedService.UncategorizedFeeds = feedGroupUncategorized;
+         [app onDataAvailable];
+         
+         [app dismissWait];
+         
+    // get images
+    //for(FeedGroup* group in feedGroups)
+    //{
+    //    for(FeedData* feed in group.items)
+    //    {
+    //        [self setFeedImage:feed];
+    //    }
+    //}
+    
+    [self.tableView reloadData ];
  });
 }
 
@@ -388,22 +411,25 @@
 {
     NSLog(@"didSelectRowAtIndexPath");
     
-    
-    FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    RSSItem *item = [items objectAtIndex:indexPath.row];
-    webView.item = item;
-    
-    //UINavigationController *navController = [self navigationController];
+    PagingScrollViewController *webViewController = [[PagingScrollViewController alloc] initWithNibName:@"PagingScrollViewController" bundle:nil];
+    //FeedData *item = [items objectAtIndex:indexPath.row];
+    FeedGroup *group = [items objectAtIndex:[indexPath section]];
+    FeedData *feedData = [group.items objectAtIndex:[indexPath row]];
+    webViewController.feedData = feedData;
     
     UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
     
-    [navController pushViewController:webView animated:YES];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    // Checked the selected row
-    //UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    [navController pushViewController:webViewController animated:YES];
     
-    //[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
 }
 
 
@@ -414,32 +440,12 @@
     
     FeedItemTableCell *cell;
     
-    //if (cell == nil) {
-        
-        //NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FeedItemTableCell" owner:self options:nil ];
-        
-        
-        //cell = [nib objectAtIndex:0 ];
-    //}
     
     if (items.count > 0)
     {
         
-        //NSArray *keyArray =  [feedGroups allKeys];
-        //FeedGroup *group = [feedGroups objectForKey:[ keyArray objectAtIndex:currentSection]];
-        
         FeedGroup *group = [items objectAtIndex:[indexPath section]];
-        
-        
-        
         FeedData *feedItem = [group.items objectAtIndex:[indexPath row]];
-        
-        //cell.titleLabel.text = feedItem.title;
-        //cell.nameLabel.text = feedItem.source;
-        
-        //cell.updatedDateLabel.text = feedItem.updated;
-        
-       // NSString *identifier = [NSString stringWithFormat:@"Cell%d%d",[indexPath section], indexPath.row];
         
         // Only load cached images; defer new downloads until scrolling ends
         if (!feedItem.image)
@@ -461,6 +467,10 @@
             cell = [nib objectAtIndex:0 ];
             
             cell.imageView.image = feedItem.image;
+            CALayer * l = [cell.imageView layer];
+            [l setMasksToBounds:YES];
+            [l setCornerRadius:5.0];
+            
             cell.imageView.clipsToBounds = YES;
         }
         
@@ -486,7 +496,8 @@
     
     UILabel *parentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, headerView.frame.size.width  , 26)];
     
-    parentLabel.backgroundColor = [[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0];
+    //64,192,203
+    parentLabel.backgroundColor = [[UIColor alloc] initWithRed:64.0 /255 green:192.0 /255 blue:203.0 /255 alpha:1.0];
     
 	//UIButton *label = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, headerView.frame.size.width, 26)];
     
@@ -512,7 +523,14 @@
     infoButton.titleLabel.textAlignment = NSTextAlignmentLeft;
 	infoButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     
-    UILabel* chevronLabel = [IonIcons labelWithIcon:icon_ios7_arrow_forward size: 22 color: [UIColor whiteColor]];
+    FAKIcon *chevronIcon = [FAKIonIcons ios7ArrowForwardIconWithSize:20.0];
+    [chevronIcon addAttribute:NSForegroundColorAttributeName value:[[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0]];
+   // button.image = [chevronIcon imageWithSize: CGSizeMake(30.0f, 30.0f)];
+    
+    
+    
+    UILabel* chevronLabel = [chevronIcon labelWithIcon:20.0 color:[UIColor whiteColor]];
+                             
     
     CGFloat titleWidth = [self widthOfString:sectionName withFont:infoButton.titleLabel.font];
     
@@ -522,7 +540,7 @@
     //                              forWidth:headerView.frame.size.width - 30
      //                                 lineBreakMode:NSLineBreakByTruncatingTail];
     
-    [chevronLabel setFrame:CGRectMake(titleWidth, 0, 26, 26)];
+    [chevronLabel setFrame:CGRectMake(titleWidth + 5, -2, 26, 26)];
     
     
     tableView.backgroundColor = [[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0];

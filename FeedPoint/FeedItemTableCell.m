@@ -59,16 +59,11 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        
-        NSLog(@"before: %f", self.titleLabel.bounds.origin.x);
-        
+    if (self)
+    {
         self.titleLabel.bounds = CGRectMake(5, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
-        
-        NSLog(@"after: %f", self.titleLabel.bounds.origin.x);
         self.nameLabel.bounds = CGRectMake(5, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
         self.updatedDateLabel.bounds = CGRectMake(5, 7, self.bounds.size.width - 10, self.bounds.size.height - 10);
-        
         self.imageView.bounds = CGRectMake(self.imageView.bounds.origin.x, self.imageView.bounds.origin.y, 0, 0);
         
     }

@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FeedData.h"
 
 @interface WebViewController : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic, strong) NSArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+
+@property (nonatomic, strong) FeedData* feedData;
 
 @property (nonatomic, retain) IBOutlet UIBarButtonItem* menuButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem* backButton;

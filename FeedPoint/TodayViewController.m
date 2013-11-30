@@ -99,11 +99,7 @@
         
         // Display the newly loaded image
         self.imageView.image = instance.appRecord.image;
-        
-        // Remove the IconDownloader from the in progress list.
-        // This will result in it being deallocated.
-        //[self.imageDownloadsInProgress removeObjectForKey:instance.appRecord.indexPath];
-        
+               
     }];
     [iconDownloader startDownload];
 }

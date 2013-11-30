@@ -30,12 +30,14 @@
 @property (strong, nonatomic) NSDate* updated;
 @property (strong, nonatomic) NSString* description;
 @property (strong, nonatomic) NSString* engagement;
+@property (strong, nonatomic) NSString* alternateUrl;
+@property (strong, nonatomic) NSString* canonicalUrl;
 @property (strong, nonatomic) Content* content;
 @property (strong, nonatomic) Content* summary;
 @property (strong, nonatomic) Origin* origin;
 @property (strong, nonatomic) NSMutableArray* categories;
 @property (strong, nonatomic) NSMutableArray* tags;
 @property (strong, nonatomic) Visual* visual;
-
+@property (nonatomic) BOOL isRead;
 
 @end

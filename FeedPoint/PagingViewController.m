@@ -10,7 +10,11 @@
 #import "TodayViewController.h"
 #import "FPMainViewController.h"
 #import "TodayListViewController.h"
-#import "IonIcons.h"
+//#import "IonIcons.h"
+#import "FeedPointAppDelegate.h"
+#import "FeedListViewController.h"
+#import "FAKIonIcons.h"
+#import "FAKIcon.h"
 
 
 @implementation PagingViewController
@@ -19,6 +23,15 @@
 //@synthesize imageArray;
 @synthesize viewArray;
 
+- (void) navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item
+{
+    //if (!self.poppedInCode) {
+    // back button was tapped
+    //}
+    
+    // set to false ready for the next pop
+    //self.poppedInCode = FALSE;
+}
 
 
 -(void) ReloadData{
@@ -35,19 +48,16 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor clearColor];
+    //249,242,231
+    self.toolbar.backgroundColor = [[UIColor alloc] initWithRed:249.0 /255 green:242.0 /255 blue:231.0 /255 alpha:1.0];
+
     
-    //self.pageControl.pageIndicatorTintColor = [UIColor greenColor];
+    self.navigationController.navigationBar.backgroundColor = [[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0];
     
-    //UIButton* fakeButton = (UIButton *) [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu.png"]];
-    //UIBarButtonItem *fakeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:fakeButton];
-    //self.navigationItem.rightBarButtonItem = fakeButtonItem;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    //UINavigationItem *navItem = self.navigationBar.items[0];
-    
-    //navItem.rightBarButtonItem = fakeButtonItem;
-    
-    //imageArray = [[NSArray alloc] initWithObjects:@"image1.jpg", @"image2.jpg", @"image3.jpg", nil];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     viewArray = [[NSMutableArray alloc] init];
     
@@ -60,20 +70,31 @@
     
     UIBarButtonItem *button = self.menuButton;
     
-    button.image = [IonIcons imageWithIcon:icon_navicon
-                                 iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                  iconSize:30.0f
-                                 imageSize:CGSizeMake(30.0f, 30.0f)];
+    //button.image = [IonIcons imageWithIcon:icon_navicon
+    //                             iconColor:[[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0]
+    //                              iconSize:30.0f
+    //                             imageSize:CGSizeMake(30.0f, 30.0f)];
+    
+    FAKIcon *shareIcon = [FAKIonIcons naviconIconWithSize:30.0];
+    [shareIcon addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor]];
+    button.image = [shareIcon imageWithSize: CGSizeMake(30.0f, 30.0f)];
+
     
     
     //UIBarButtonItem *button = self.settingsButton;
     
-    self.settingsButton.image = [IonIcons imageWithIcon:icon_ios7_gear_outline
-                                 iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                  iconSize:30.0f
-                                 imageSize:CGSizeMake(30.0f, 30.0f)];
+    //self.settingsButton.image = [IonIcons imageWithIcon:icon_ios7_gear_outline
+    //                             iconColor:[[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0]
+    //                              iconSize:30.0f
+    //                             imageSize:CGSizeMake(30.0f, 30.0f)];
     
-    [self.settingsButton setTitle: @"Settings"];
+    
+    FAKIcon *settingsIcon = [FAKIonIcons ios7GearOutlineIconWithSize:30.0];
+    [settingsIcon addAttribute:NSForegroundColorAttributeName value:[[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0]];
+    self.settingsButton.image = [settingsIcon imageWithSize: CGSizeMake(30.0f, 30.0f)];
+
+    
+    //[self.settingsButton setTitle: @"Settings"];
     
     
         //[button
@@ -118,25 +139,53 @@
     frame.size.height = frame.size.height - 40;
     
     FPMainViewController *listViewController = [[FPMainViewController alloc] initWithNibName:@"FPMainViewController" bundle:nil];
-    
-    //UIView *view = listViewController.view;
 
     [self.viewArray addObject:(listViewController)];
     [self.scrollView addSubview:listViewController.view];
 
     [listViewController.view setFrame:frame];
+    
+    
+    frame.origin.x = frame.size.width * 3;
+    frame.origin.y = 0;
+    frame.size = self.scrollView.frame.size;
+    frame.size.height = frame.size.height - 40;
+    
+    FeedListViewController *feedListView = [[FeedListViewController alloc] initWithNibName:@"FeedListViewController" bundle:nil];
+    
+     feedListView.parentController = self;
+    
+    [self.viewArray addObject:(feedListView)];
+    [self.scrollView addSubview:feedListView.view];
+   
+    
+    [feedListView.view setFrame:frame];
+
    
    
     
     
     //Set the content size of our scrollview according to the total width of our imageView objects.
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * 3, scrollView.frame.size.height);
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * 4, scrollView.frame.size.height);
     
-    
+    self.pageControl.numberOfPages = 4;
     self.scrollView.delegate = self;
 	
-	//self.scrollView.contentSize = CGSizeMake(960, 424);
+    
+   FeedPointAppDelegate* app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
+   [app showWait];
 }
+
+- (IBAction)settingsButtonClicked: (id)sender
+{
+    
+}
+
+- (IBAction)menuButtonClicked: (id)sender
+{
+    
+}
+
 
 -(BOOL)automaticallyAdjustsScrollViewInsets
 {

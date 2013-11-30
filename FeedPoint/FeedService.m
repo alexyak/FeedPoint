@@ -63,10 +63,145 @@
     finalUrl = [finalUrl stringByAppendingString:param];
     
     NSMutableURLRequest *request = [self getRequest:finalUrl];
+    FeedStream *feedStream = [[FeedStream alloc] init];
     
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data)
+        {
+            NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            
+            NSLog(@"%@", stringData);
+            
+            NSError* error;
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:data //1
+                                  options:kNilOptions
+                                  error:&error];
+            
+            
+            
+            
+            feedStream.id = [json objectForKey:@"id"];
+            feedStream.title = [json objectForKey:@"title"];
+            
+            feedStream.alternate = [[NSMutableArray alloc]init];
+            feedStream.items = [[NSMutableArray alloc]init];
+            
+            NSDictionary *alternates = [json objectForKey:@"alternate"];
+            for(NSDictionary *item in alternates){
+                Feed* alternate = [[Feed alloc] init];
+                alternate.href = [item objectForKey:@"href"];
+                alternate.linkType = [item objectForKey:@"type"];
+                [feedStream.alternate addObject:alternate];
+            }
+            
+            NSDictionary *items = [json objectForKey:@"items"];
+            
+            for(NSDictionary *item in items){
+                FeedItem* feedItem = [[FeedItem alloc] init];
+                feedItem.id = [item objectForKey:@"id"];
+                feedItem.title = [item objectForKey:@"title"];
+                feedItem.author = [item objectForKey:@"author"];
+                feedItem.categories = [[NSMutableArray alloc] init];
+                
+                NSDictionary *origin = [item objectForKey:@"origin"];
+                
+                if (origin)
+                {
+                    Origin* originItem = [[Origin alloc]init];
+                    originItem.title = [origin objectForKey:@"title"];
+                    originItem.htmlUrl = [origin objectForKey:@"htmlUrl"];
+                    originItem.streamId = [origin objectForKey:@"streamId"];
+                    feedItem.origin = originItem;
+                }
+                
+                NSDictionary *categories = [item objectForKey:@"categories"];
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                if ([item objectForKey:@"tags"] != nil)
+                {
+                    NSDictionary *tags = [item objectForKey:@"tags"];
+                    
+                    feedItem.tags = [[NSMutableArray alloc] init];
+                    
+                    for(NSDictionary *tag in tags)
+                    {
+                        FeedCategory* feedTag = [[FeedCategory alloc] init];
+                        
+                        feedTag.id = [tag objectForKey:@"id"];
+                        feedTag.label = [tag objectForKey:@"label"];
+                        [feedItem.tags addObject:feedTag];
+                        
+                    }
+                }
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                
+                if ([item objectForKey:@"content"] != nil)
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"content"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                else
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"summary"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                
+                if ([item objectForKey:@"visual"] != nil)
+                {
+                    NSDictionary *visual = [item objectForKey:@"visual"];
+                    Visual* visualItem = [[Visual alloc]init];
+                    visualItem.url = [visual objectForKey:@"url"];
+                    visualItem.width = [[visual objectForKey:@"width"] intValue];
+                    visualItem.height = [[visual objectForKey:@"height"] intValue];
+                    visualItem.contentType = [visual objectForKey:@"contentType"];
+                    feedItem.visual = visualItem;
+                }
+                
+                //NSTimeInterval* iterval = [NSTimeInterval in
+                double publishedInt = [[item objectForKey:@"published"] doubleValue] / 1000;
+                feedItem.published = [NSDate dateWithTimeIntervalSince1970:publishedInt];
+                
+                
+                [feedStream.items addObject:feedItem];
+            }
+            
+            
+            
+        }
+        
+        callback(feedStream);
+    }];
+    
+    /*
+    NSMutableURLRequest *request = [self getRequest:finalUrl];
     NSURLResponse *response = nil;
     NSError *outError = [[NSError alloc] init];
-    
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&outError];
     
     FeedStream *feedStream = [[FeedStream alloc] init];
@@ -202,11 +337,11 @@
     
     callback(feedStream);
 
-    
+    */
 }
 
 
--(void)getFeed: (NSString*) url top: (int)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback
+-(void)getFeedAsync: (NSString*) url top: (NSInteger)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback
 {
    
     
@@ -241,7 +376,159 @@
     finalUrl = [finalUrl stringByAppendingString:param];
     
     NSMutableURLRequest *request = [self getRequest:finalUrl];
+    FeedStream *feedStream = [[FeedStream alloc] init];
     
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data)
+        {
+            NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            
+            NSLog(@"%@", stringData);
+            
+            NSError* error;
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:data //1
+                                  options:kNilOptions
+                                  error:&error];
+            
+            
+            
+            
+            feedStream.id = [json objectForKey:@"id"];
+            feedStream.title = [json objectForKey:@"title"];
+            
+            feedStream.continuation = [json objectForKey:@"continuation"];
+            
+            feedStream.alternate = [[NSMutableArray alloc]init];
+            feedStream.items = [[NSMutableArray alloc]init];
+            
+            NSDictionary *alternates = [json objectForKey:@"alternate"];
+            for(NSDictionary *item in alternates){
+                Feed* alternate = [[Feed alloc] init];
+                alternate.href = [item objectForKey:@"href"];
+                alternate.linkType = [item objectForKey:@"type"];
+                [feedStream.alternate addObject:alternate];
+            }
+            
+            NSDictionary *items = [json objectForKey:@"items"];
+            
+            for(NSDictionary *item in items){
+                FeedItem* feedItem = [[FeedItem alloc] init];
+                feedItem.id = [item objectForKey:@"id"];
+                feedItem.title = [item objectForKey:@"title"];
+                feedItem.author = [item objectForKey:@"author"];
+                feedItem.categories = [[NSMutableArray alloc] init];
+                
+                NSDictionary *origin = [item objectForKey:@"origin"];
+                
+                if (origin)
+                {
+                    Origin* originItem = [[Origin alloc]init];
+                    originItem.title = [origin objectForKey:@"title"];
+                    originItem.htmlUrl = [origin objectForKey:@"htmlUrl"];
+                    originItem.streamId = [origin objectForKey:@"streamId"];
+                    
+                    feedItem.origin = originItem;
+                }
+                
+                NSArray * alternate = [item objectForKey:@"alternate"];
+                if (alternate)
+                {
+                    NSDictionary* first = [alternate objectAtIndex:0];
+                    feedItem.alternateUrl = [first objectForKey:@"href"];
+                }
+                
+                NSArray * canonical = [item objectForKey:@"canonical"];
+                if (canonical)
+                {
+                    NSDictionary* first = [canonical objectAtIndex:0];
+                    feedItem.canonicalUrl = [first objectForKey:@"href"];
+                    
+                }
+                
+                NSDictionary *categories = [item objectForKey:@"categories"];
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                if ([item objectForKey:@"tags"] != nil)
+                {
+                    NSDictionary *tags = [item objectForKey:@"tags"];
+                    
+                    feedItem.tags = [[NSMutableArray alloc] init];
+                    
+                    for(NSDictionary *tag in tags)
+                    {
+                        FeedCategory* feedTag = [[FeedCategory alloc] init];
+                        
+                        feedTag.id = [tag objectForKey:@"id"];
+                        feedTag.label = [tag objectForKey:@"label"];
+                        [feedItem.tags addObject:feedTag];
+                        
+                    }
+                }
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                
+                if ([item objectForKey:@"content"] != nil)
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"content"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                else
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"summary"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                
+                if ([item objectForKey:@"visual"] != nil)
+                {
+                    NSDictionary *visual = [item objectForKey:@"visual"];
+                    Visual* visualItem = [[Visual alloc]init];
+                    visualItem.url = [visual objectForKey:@"url"];
+                    visualItem.width = [[visual objectForKey:@"width"] intValue];
+                    visualItem.height = [[visual objectForKey:@"height"] intValue];
+                    visualItem.contentType = [visual objectForKey:@"contentType"];
+                    feedItem.visual = visualItem;
+                }
+                
+                //NSTimeInterval* iterval = [NSTimeInterval in
+                double publishedInt = [[item objectForKey:@"published"] doubleValue] / 1000;
+                feedItem.published = [NSDate dateWithTimeIntervalSince1970:publishedInt];
+                
+                
+                [feedStream.items addObject:feedItem];
+            }
+            
+            
+            
+        }
+        
+        callback(feedStream);
+    }];
+    /*
     NSURLResponse *response = nil;
     NSError *outError = [[NSError alloc] init];
     
@@ -299,6 +586,21 @@
                 originItem.streamId = [origin objectForKey:@"streamId"];
 
                 feedItem.origin = originItem;
+            }
+            
+            NSArray * alternate = [item objectForKey:@"alternate"];
+            if (alternate)
+            {
+                NSDictionary* first = [alternate objectAtIndex:0];
+                feedItem.alternateUrl = [first objectForKey:@"href"];
+            }
+            
+            NSArray * canonical = [item objectForKey:@"canonical"];
+            if (canonical)
+            {
+                NSDictionary* first = [canonical objectAtIndex:0];
+                feedItem.canonicalUrl = [first objectForKey:@"href"];
+                
             }
             
             NSDictionary *categories = [item objectForKey:@"categories"];
@@ -382,8 +684,359 @@
     }
     
     callback(feedStream);
+    */
     
 }
+
+-(void)getFeed: (NSString*) url top: (NSInteger)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback
+{
+    
+    
+    NSString * urlEncoded = (__bridge NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                         NULL,
+                                                                                         (CFStringRef)url,
+                                                                                         NULL,
+                                                                                         (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                         kCFStringEncodingUTF8 );
+    
+    NSString* param = [@"count=" stringByAppendingString: [NSString stringWithFormat:@"%i", t]];
+    
+    if (cont != nil)
+    {
+        param = [param stringByAppendingString:[@"&continuation=" stringByAppendingString:cont ]];
+    }
+    
+    if (old)
+    {
+        param = [param stringByAppendingString:@"&ranked=old&unreadOnly=true"];
+    }
+    else
+    {
+        param = [param stringByAppendingString:@"&ranked=newest&unreadOnly=true"];
+    }
+    
+    NSString* finalUrl = @"http://cloud.feedly.com/v3/streams/";
+    
+    finalUrl = [finalUrl stringByAppendingString:urlEncoded];
+    
+    finalUrl = [finalUrl stringByAppendingString:@"/contents?"];
+    finalUrl = [finalUrl stringByAppendingString:param];
+    
+    NSMutableURLRequest *request = [self getRequest:finalUrl];
+    //FeedStream *feedStream = [[FeedStream alloc] init];
+    
+    /*
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data)
+        {
+            NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            
+            NSLog(@"%@", stringData);
+            
+            NSError* error;
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:data //1
+                                  options:kNilOptions
+                                  error:&error];
+            
+            
+            
+            
+            feedStream.id = [json objectForKey:@"id"];
+            feedStream.title = [json objectForKey:@"title"];
+            
+            feedStream.continuation = [json objectForKey:@"continuation"];
+            
+            feedStream.alternate = [[NSMutableArray alloc]init];
+            feedStream.items = [[NSMutableArray alloc]init];
+            
+            NSDictionary *alternates = [json objectForKey:@"alternate"];
+            for(NSDictionary *item in alternates){
+                Feed* alternate = [[Feed alloc] init];
+                alternate.href = [item objectForKey:@"href"];
+                alternate.linkType = [item objectForKey:@"type"];
+                [feedStream.alternate addObject:alternate];
+            }
+            
+            NSDictionary *items = [json objectForKey:@"items"];
+            
+            for(NSDictionary *item in items){
+                FeedItem* feedItem = [[FeedItem alloc] init];
+                feedItem.id = [item objectForKey:@"id"];
+                feedItem.title = [item objectForKey:@"title"];
+                feedItem.author = [item objectForKey:@"author"];
+                feedItem.categories = [[NSMutableArray alloc] init];
+                
+                NSDictionary *origin = [item objectForKey:@"origin"];
+                
+                if (origin)
+                {
+                    Origin* originItem = [[Origin alloc]init];
+                    originItem.title = [origin objectForKey:@"title"];
+                    originItem.htmlUrl = [origin objectForKey:@"htmlUrl"];
+                    originItem.streamId = [origin objectForKey:@"streamId"];
+                    
+                    feedItem.origin = originItem;
+                }
+                
+                NSArray * alternate = [item objectForKey:@"alternate"];
+                if (alternate)
+                {
+                    NSDictionary* first = [alternate objectAtIndex:0];
+                    feedItem.alternateUrl = [first objectForKey:@"href"];
+                }
+                
+                NSArray * canonical = [item objectForKey:@"canonical"];
+                if (canonical)
+                {
+                    NSDictionary* first = [canonical objectAtIndex:0];
+                    feedItem.canonicalUrl = [first objectForKey:@"href"];
+                    
+                }
+                
+                NSDictionary *categories = [item objectForKey:@"categories"];
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                if ([item objectForKey:@"tags"] != nil)
+                {
+                    NSDictionary *tags = [item objectForKey:@"tags"];
+                    
+                    feedItem.tags = [[NSMutableArray alloc] init];
+                    
+                    for(NSDictionary *tag in tags)
+                    {
+                        FeedCategory* feedTag = [[FeedCategory alloc] init];
+                        
+                        feedTag.id = [tag objectForKey:@"id"];
+                        feedTag.label = [tag objectForKey:@"label"];
+                        [feedItem.tags addObject:feedTag];
+                        
+                    }
+                }
+                
+                for(NSDictionary *category in categories)
+                {
+                    FeedCategory* feedCategory = [[FeedCategory alloc] init];
+                    
+                    feedCategory.id = [category objectForKey:@"id"];
+                    feedCategory.label = [category objectForKey:@"label"];
+                    [feedItem.categories addObject:feedCategory];
+                    
+                }
+                
+                
+                if ([item objectForKey:@"content"] != nil)
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"content"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                else
+                {
+                    NSDictionary *itemContent = [item objectForKey:@"summary"];
+                    
+                    Content* content = [[Content alloc] init];
+                    content.content = [itemContent objectForKey:@"content"];
+                    feedItem.content = content;
+                }
+                
+                if ([item objectForKey:@"visual"] != nil)
+                {
+                    NSDictionary *visual = [item objectForKey:@"visual"];
+                    Visual* visualItem = [[Visual alloc]init];
+                    visualItem.url = [visual objectForKey:@"url"];
+                    visualItem.width = [[visual objectForKey:@"width"] intValue];
+                    visualItem.height = [[visual objectForKey:@"height"] intValue];
+                    visualItem.contentType = [visual objectForKey:@"contentType"];
+                    feedItem.visual = visualItem;
+                }
+                
+                //NSTimeInterval* iterval = [NSTimeInterval in
+                double publishedInt = [[item objectForKey:@"published"] doubleValue] / 1000;
+                feedItem.published = [NSDate dateWithTimeIntervalSince1970:publishedInt];
+                
+                
+                [feedStream.items addObject:feedItem];
+            }
+            
+            
+            
+        }
+        
+        callback(feedStream);
+    }];
+     */
+    
+     NSURLResponse *response = nil;
+     NSError *outError = [[NSError alloc] init];
+     
+     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&outError];
+     
+     FeedStream *feedStream = [[FeedStream alloc] init];
+     
+     if (data)
+     {
+     NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+     
+     NSLog(@"%@", stringData);
+     
+     NSError* error;
+     NSDictionary* json = [NSJSONSerialization
+     JSONObjectWithData:data //1
+     options:kNilOptions
+     error:&error];
+     
+     
+     
+     
+     feedStream.id = [json objectForKey:@"id"];
+     feedStream.title = [json objectForKey:@"title"];
+     
+     feedStream.continuation = [json objectForKey:@"continuation"];
+     
+     feedStream.alternate = [[NSMutableArray alloc]init];
+     feedStream.items = [[NSMutableArray alloc]init];
+     
+     NSDictionary *alternates = [json objectForKey:@"alternate"];
+     for(NSDictionary *item in alternates){
+     Feed* alternate = [[Feed alloc] init];
+     alternate.href = [item objectForKey:@"href"];
+     alternate.linkType = [item objectForKey:@"type"];
+     [feedStream.alternate addObject:alternate];
+     }
+     
+     NSDictionary *items = [json objectForKey:@"items"];
+     
+     for(NSDictionary *item in items){
+     FeedItem* feedItem = [[FeedItem alloc] init];
+     feedItem.id = [item objectForKey:@"id"];
+     feedItem.title = [item objectForKey:@"title"];
+     feedItem.author = [item objectForKey:@"author"];
+     feedItem.categories = [[NSMutableArray alloc] init];
+     
+     NSDictionary *origin = [item objectForKey:@"origin"];
+     
+     if (origin)
+     {
+     Origin* originItem = [[Origin alloc]init];
+     originItem.title = [origin objectForKey:@"title"];
+     originItem.htmlUrl = [origin objectForKey:@"htmlUrl"];
+     originItem.streamId = [origin objectForKey:@"streamId"];
+     
+     feedItem.origin = originItem;
+     }
+     
+     NSArray * alternate = [item objectForKey:@"alternate"];
+     if (alternate)
+     {
+     NSDictionary* first = [alternate objectAtIndex:0];
+     feedItem.alternateUrl = [first objectForKey:@"href"];
+     }
+     
+     NSArray * canonical = [item objectForKey:@"canonical"];
+     if (canonical)
+     {
+     NSDictionary* first = [canonical objectAtIndex:0];
+     feedItem.canonicalUrl = [first objectForKey:@"href"];
+     
+     }
+     
+     NSDictionary *categories = [item objectForKey:@"categories"];
+     
+     for(NSDictionary *category in categories)
+     {
+     FeedCategory* feedCategory = [[FeedCategory alloc] init];
+     
+     feedCategory.id = [category objectForKey:@"id"];
+     feedCategory.label = [category objectForKey:@"label"];
+     [feedItem.categories addObject:feedCategory];
+     
+     }
+     
+     if ([item objectForKey:@"tags"] != nil)
+     {
+     NSDictionary *tags = [item objectForKey:@"tags"];
+     
+     feedItem.tags = [[NSMutableArray alloc] init];
+     
+     for(NSDictionary *tag in tags)
+     {
+     FeedCategory* feedTag = [[FeedCategory alloc] init];
+     
+     feedTag.id = [tag objectForKey:@"id"];
+     feedTag.label = [tag objectForKey:@"label"];
+     [feedItem.tags addObject:feedTag];
+     
+     }
+     }
+     
+     for(NSDictionary *category in categories)
+     {
+     FeedCategory* feedCategory = [[FeedCategory alloc] init];
+     
+     feedCategory.id = [category objectForKey:@"id"];
+     feedCategory.label = [category objectForKey:@"label"];
+     [feedItem.categories addObject:feedCategory];
+     
+     }
+     
+     
+     if ([item objectForKey:@"content"] != nil)
+     {
+     NSDictionary *itemContent = [item objectForKey:@"content"];
+     
+     Content* content = [[Content alloc] init];
+     content.content = [itemContent objectForKey:@"content"];
+     feedItem.content = content;
+     }
+     else
+     {
+     NSDictionary *itemContent = [item objectForKey:@"summary"];
+     
+     Content* content = [[Content alloc] init];
+     content.content = [itemContent objectForKey:@"content"];
+     feedItem.content = content;
+     }
+     
+     if ([item objectForKey:@"visual"] != nil)
+     {
+     NSDictionary *visual = [item objectForKey:@"visual"];
+     Visual* visualItem = [[Visual alloc]init];
+     visualItem.url = [visual objectForKey:@"url"];
+     visualItem.width = [[visual objectForKey:@"width"] intValue];
+     visualItem.height = [[visual objectForKey:@"height"] intValue];
+     visualItem.contentType = [visual objectForKey:@"contentType"];
+     feedItem.visual = visualItem;
+     }
+     
+     //NSTimeInterval* iterval = [NSTimeInterval in
+     double publishedInt = [[item objectForKey:@"published"] doubleValue] / 1000;
+     feedItem.published = [NSDate dateWithTimeIntervalSince1970:publishedInt];
+     
+     
+     [feedStream.items addObject:feedItem];
+     }
+     
+     
+     
+     }
+     
+     callback(feedStream);
+    
+    
+}
+
 
 -(void)getUnreadCounts: (UnreadItemsCompleteBlock) callback{
     
@@ -489,57 +1142,79 @@
     
 }
 
--(void)fetchRssWithURL:(NSURL*)url complete:(RSSLoaderCompleteBlock)c
+
+-(void)setAsRead: (NSString*) itemId complete: (EmptyCompleteBlock)callback
 {
+    NSString* param = @"{\"action\":\"markAsRead\",";
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30];
+    param = [param stringByAppendingString:@"\"type\":\"entries\","];
+    param = [param stringByAppendingString: [NSString stringWithFormat:@"\"entryIds\":[\"%@\"]}", itemId]];
+    
+    NSMutableURLRequest *request = [self getRequest:@"http://cloud.feedly.com/v3/markers"];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSData *requestBodyData = [param dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = requestBodyData;
+    
+    
+    
+    //NSURLResponse *response = nil;
+    //NSError *outError = [[NSError alloc] init];
+    
+    //NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&outError];
+    
+   // [NSURLConnection sendAsynchronousRequest:request queue:<#(NSOperationQueue *)#> completionHandler:<#^(NSURLResponse *response, NSData *data, NSError *connectionError)handler#>
+     
+     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+         if (data){
+             dispatch_async(kBgQueue, ^{
+                 NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                 if ([stringData compare:@""] == NSOrderedSame)
+                     callback(TRUE);
+                 else
+                     callback(FALSE);
+             });
+         }
+         
+    }];
+     
+    
+}
+
+-(void)setAsUnRead: (NSString*) itemId complete: (EmptyCompleteBlock)callback
+{
+    NSString* param = @"{\"action\":\"keepUnread\",";
+    
+    param = [param stringByAppendingString:@"\"type\":\"entries\","];
+    param = [param stringByAppendingString: [NSString stringWithFormat:@"\"entryIds\":[\"%@\"]}", itemId]];
+    
+    NSMutableURLRequest *request = [self getRequest:@"http://cloud.feedly.com/v3/markers"];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSData *requestBodyData = [param dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = requestBodyData;
+    
+    
+    
     NSURLResponse *response = nil;
     NSError *outError = [[NSError alloc] init];
-
+    
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&outError];
-    
     if (data){
-        {
-            dispatch_async(kBgQueue, ^{
-                
-                //work in the background
-                RXMLElement *rss = [RXMLElement elementFromXMLData:data];
-                
-                RXMLElement* title = [[rss child:@"channel"] child:@"title"];
-                NSArray* items = [[rss child:@"channel"] children:@"item"];
-                
-                NSMutableArray* result = [NSMutableArray arrayWithCapacity:items.count];
-                
-                for (RXMLElement *e in items)
-                {
-                      //iterate over the articles
-                      RSSItem* item = [[RSSItem alloc] init];
-                      item.title = [[e child:@"title"] text];
-                      item.description = [[e child:@"description"] text];
-                      item.link = [NSURL URLWithString: [[e child:@"link"] text]];
-                      item.author = [[e child:@"creator"] text];
-                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                    [formatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zz"];
-                    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-                    //NSDate *today = [NSDate date];
-                    
-                    
-                    NSString *date = [[e child:@"pubDate"] text];
-                    item.pubDate = [formatter dateFromString:date];
-                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                    [dateFormatter setDateFormat:@"MMM, d yyyy HH:mmt"];
-
-                    item.pubDateFormatted = [dateFormatter stringFromDate:item.pubDate];
-                      [result addObject: item];
-                  }
-                
-                  c([title text], result);
-                
-            });
-        }
+        dispatch_async(kBgQueue, ^{
+            NSString * stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"setAsUnread:%@", stringData);
+            
+            if ([stringData compare:@""] == NSOrderedSame)
+                callback(TRUE);
+            else
+                callback(FALSE);
+        });
     }
-    
-    
 }
 
 -(NSMutableURLRequest*) getRequest: (NSString*) uri{

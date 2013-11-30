@@ -16,9 +16,10 @@
 #import "TodayViewController.h"
 #import "FPWebViewController.h"
 #import "WebViewController.h"
+#import "CustomWebViewController.h"
+#import "PagingScrollViewController.h"
 
 @interface TodayListViewController ()
-
 
 
 @end
@@ -54,6 +55,7 @@
     self.imageDownloadsInProgress = [NSMutableDictionary dictionary];
     
     app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
+    
     
     if (app.feedService.AuthToken){
         
@@ -113,6 +115,9 @@
                  PagingViewController* parent =(PagingViewController*) self.parentController;
                  TodayViewController* todayView = (TodayViewController*)[parent.viewArray objectAtIndex:0];
                  [todayView viewDidLoad];
+                 FeedPointAppDelegate* app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
+                 //[app dismissWait];
+
                  
              });
             
@@ -261,20 +266,11 @@
     NSLog(@"didSelectRowAtIndexPath");
     
     
-    //FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    //FeedData *item = [items objectAtIndex:indexPath.row];
-    //webView.item = [item.items objectAtIndex:0];
+     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-   // UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
-    
-   // [navController pushViewController:webView animated:YES];
-    
-   // [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    
-    WebViewController *webViewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil];
-    FeedData *item = [items objectAtIndex:indexPath.row];
+    PagingScrollViewController *webViewController = [[PagingScrollViewController alloc] initWithNibName:@"PagingScrollViewController" bundle:nil];
     webViewController.dataArray = items;
+    webViewController.selectedIndex = indexPath.row;
     
     UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
     
@@ -285,6 +281,22 @@
     
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Mark Unread";
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    //if (indexPath.section == 0) {
+     //   if (indexPath.row == 0) {
+    ////        return NO;
+    //    }
+   // }
+    return YES;
+    
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -321,6 +333,11 @@
             cell = [nib objectAtIndex:0 ];
             
             cell.imageView.image = feedItem.image;
+            
+            CALayer * l = [cell.imageView layer];
+            [l setMasksToBounds:YES];
+            [l setCornerRadius:5.0];
+            
             cell.imageView.clipsToBounds = YES;
         }
         

@@ -15,14 +15,14 @@
 #import "FeedItemTableCell.h"
 #import "NoImageTableCell.h"
 #import "FPWebViewController.h"
-#import "IonIcons.h"
+#import "PagingScrollViewController.h"
 
 @interface FeedListViewController ()
 {
-    NSMutableArray *items;
+    //NSMutableArray *items;
     
     FeedPointAppDelegate *app;
-    NSString* continuation;
+   // NSString* continuation;
 }
 
 //FeedPointAppDelegate *app;
@@ -31,6 +31,18 @@
 @end
 
 @implementation FeedListViewController
+
+-(void)dataAvailable
+{
+    if (!app)
+    {
+        app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
+    }
+    
+    self.dataArray = app.feedService.UncategorizedFeeds.items;
+    
+    [self viewDidLoad];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,65 +57,35 @@
 {
     [super viewDidLoad];
     app = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate);
-    items = [[NSMutableArray alloc] init];
+    //items = [[NSMutableArray alloc] init];
+    app.delegate = self;
     
-    UIBarButtonItem *menuButton = self.menuButton;
-    menuButton.image = [IonIcons imageWithIcon:icon_navicon
-                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                      iconSize:30.0f
-                                     imageSize:CGSizeMake(30.0f, 30.0f)];
-    
-    UIBarButtonItem *backButton = self.backButton;
-    backButton.image = [IonIcons imageWithIcon:icon_ios7_arrow_left
-                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                      iconSize:30.0f
-                                     imageSize:CGSizeMake(30.0f, 30.0f)];
-    
-    UIBarButtonItem *forwardButton = self.forwardButton;
-    forwardButton.image = [IonIcons imageWithIcon:icon_ios7_arrow_right
-                                        iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                         iconSize:30.0f
-                                        imageSize:CGSizeMake(30.0f, 30.0f)];
-    
-    UIBarButtonItem *markButton = self.markButton;
-    markButton.image = [IonIcons imageWithIcon:icon_ios7_checkmark_outline
-                                     iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                      iconSize:30.0f
-                                     imageSize:CGSizeMake(30.0f, 30.0f)];
-    
-    UIBarButtonItem *shareButton = self.shareButton;
-    shareButton.image = [IonIcons imageWithIcon:icon_ios7_upload_outline
-                                      iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                       iconSize:30.0f
-                                      imageSize:CGSizeMake(30.0f, 30.0f)];
-    
-    [self.navigationItem setTitle:self.feedData.title];
-    
-    UIButton* fakeButton = (UIButton *) [[UIImageView alloc] initWithImage:[IonIcons imageWithIcon:icon_ios7_drag
-                                                                                         iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
-                                                                                          iconSize:30.0f
-                                                                                         imageSize:CGSizeMake(30.0f, 30.0f)]];
-    UIBarButtonItem *fakeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:fakeButton];
-    self.navigationItem.rightBarButtonItem = fakeButtonItem;
-
-    
-    if (app.feedService.AuthToken){
-        
-        [self loadFeedItems : self.feedData];
+    if (self.dataArray != nil)
+    {
+         [self.tableView reloadData];
     }
+    //if (app.feedService.AuthToken){
+        
+    //    [self loadFeedItems : self.feedData];
+   // }
 
+}		
+
+- (IBAction)browserButtonClicked: (id)sender{
+   
 }
-
 
 - (void)loadFeedItems : (FeedData *) feedData
 {
+    if (feedData == nil)
+        return;
     
-    int count = feedData.updatedCount;
+    NSInteger count = feedData.updatedCount;
     
     
     if (feedData.updatedCount > 21)
     {
-        count = feedData.updatedCount - items.count;
+        count = feedData.updatedCount - self.dataArray.count;
         if (count > 21)
         {
             count = 20;
@@ -111,10 +93,10 @@
     }
     
     
-    [app.feedService getFeed:feedData.id top:count continuation:continuation sort:TRUE complete:^(FeedStream *result) {
+    [app.feedService getFeedAsync:feedData.id top:count continuation:self.continuation sort:TRUE complete:^(FeedStream *result) {
         if (result.items.count > 0)
         {
-            continuation = result.continuation;
+            self.continuation = result.continuation;
             
             for(FeedItem *item in result.items)
             {
@@ -151,7 +133,7 @@
                 }
                 
                 
-                [items addObject:feedData];
+                [self.dataArray addObject:feedData];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData ];
@@ -219,7 +201,7 @@
             return result;
         }
     }
-    else if (numberOfDays == 1)
+    else if (numberOfDays == 1 || numberOfDays == 0)
     {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"MMM dd, yyyy"];
@@ -286,26 +268,77 @@
     
 }
 
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+    // Return NO if you do not want the specified item to be editable.
+    //if (indexPath.section == 0) {
+    //   if (indexPath.row == 0) {
+    ////        return NO;
+    //    }
+    // }
+//    return YES;
+    
+//}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Mark Unread";
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [items count];
+    return [self.dataArray count];
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 99;
+    return 100;
     
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate)
-	{
-        [self loadImagesForOnscreenRows];
-    }
+    //if (!decelerate)
+	//{
+    //[self loadImagesForOnscreenRows];
+    
+    [self LoadImages];
+    
+    //}
     
     [self loadMoreItems];
+}
+
+
+-(void)selectItem:(NSInteger)index
+{
+    //NSIndexPath* newIndex = [[NSIndexPath alloc] indexPathForRow:index];
+    
+    NSIndexPath *newIndex = [NSIndexPath indexPathForRow:index inSection:0];
+    
+    NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+    
+    BOOL isVisible = FALSE;
+    
+    for (NSIndexPath *indexPath in visiblePaths)
+    {
+        if (indexPath.row == index)
+        {
+            isVisible = TRUE;
+            break;
+        }
+    }
+    
+    if (!isVisible)
+    {
+        [self.tableView selectRowAtIndexPath:newIndex animated:FALSE scrollPosition:UITableViewScrollPositionTop];
+    }
+    else
+    {
+         [self.tableView selectRowAtIndexPath:newIndex animated:FALSE scrollPosition:UITableViewScrollPositionNone];
+    }
+    
 }
 
 // -------------------------------------------------------------------------------
@@ -313,23 +346,76 @@
 // -------------------------------------------------------------------------------
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self loadImagesForOnscreenRows];
-    [self loadMoreItems];
+    //[self loadImagesForOnscreenRows];
+    //[self loadMoreItems];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PagingScrollViewController* parentController = (PagingScrollViewController*) self.parentViewController;
     
-    FPWebViewController *webView = [[FPWebViewController alloc] initWithNibName:@"FPWebViewController" bundle:nil];
-    FeedData *item = [items objectAtIndex:indexPath.row];
-    webView.item = [item.items objectAtIndex:0];
-    
-    UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
-    
-    [navController pushViewController:webView animated:YES];
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (parentController != nil)
+    {
+        [parentController showItem: indexPath.row];
+        parentController.scrollView.hidden = NO;
+        [self slideViewUp:self.view];
+    }
+    else
+    {
+        
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        PagingScrollViewController *webViewController = [[PagingScrollViewController alloc] initWithNibName:@"PagingScrollViewController" bundle:nil];
+        //FeedData *item = [items objectAtIndex:indexPath.row];
+        //FeedGroup *group = [items objectAtIndex:[indexPath section]];
+        FeedData *feedData = [self.dataArray objectAtIndex:[indexPath row]];
+        webViewController.feedData = feedData;
+        
+        UINavigationController* navController = ((FeedPointAppDelegate*)[UIApplication sharedApplication].delegate).navigationController;
+        
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        [navController pushViewController:webViewController animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
 
+    }
+    
+
+}
+ 
+- (void)slideView:(UIView*)view direction:(BOOL)isLeftToRight {
+    CGRect frame = view.frame;
+    frame.origin.x = (isLeftToRight) ? -320 : 320;
+    view.frame = frame;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    frame.origin.x = 0;
+    view.frame = frame;
+    [UIView commitAnimations];
+}
+
+- (void)slideViewUp:(UIView*)view {
+    CGRect frame = view.frame;
+    CGFloat origY = view.frame.origin.y;
+    
+    frame.origin.y = origY;//(isUp) ? (-1)*view.frame.size.height : view.frame.size.height;
+    view.frame = frame;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDidStopSelector:@selector(animDone:finished:context:)];
+    [UIView setAnimationDelegate:self];
+    frame.origin.y = (-1)*view.frame.size.height;
+    view.frame = frame;
+    [UIView commitAnimations];
+}
+
+- (void)animDone:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
+    
+    self.view.hidden = YES;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -339,11 +425,11 @@
     static NSString *noImageIdentifier = @"NoImageTableCell";
     
     FeedItemTableCell * cell;
-    
-    if (items.count > 0)
+    		
+    if (self.dataArray.count > 0)
     {
         
-        FeedData *feedItem = [items objectAtIndex:indexPath.row];
+        FeedData *feedItem = [self.dataArray objectAtIndex:indexPath.row];
         
         
         if (!feedItem.image)
@@ -368,6 +454,11 @@
             cell = [nib objectAtIndex:0 ];
             
             cell.imageView.image = feedItem.image;
+            
+            CALayer * l = [cell.imageView layer];
+            [l setMasksToBounds:YES];
+            [l setCornerRadius:5.0];
+            
             cell.imageView.clipsToBounds = YES;
         }
         
@@ -386,31 +477,60 @@
     
     int lastCounter = [[visiblePaths objectAtIndex:visiblePaths.count - 1] row];
     
-    if (lastCounter > (items.count - 5))
+    
+    if (lastCounter > (self.dataArray.count - 6))
     {
         [self loadFeedItems: self.feedData];
     }
-    
 }
 
 
+-(void)LoadImages
+{
+    if (self.dataArray.count > 0)
+    {
+        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+        
+        NSInteger count = [visiblePaths count];
+        
+        
+        NSIndexPath* startItem = [visiblePaths objectAtIndex:0];
+        //NSIndexPath* endItem = [visiblePaths objectAtIndex:count - 1];
+        
+        if (startItem.row+count+count < self.dataArray.count )
+        {
+            for (NSInteger i=startItem.row; i<startItem.row+count+count; i++) {
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                FeedData *feedItem = [self.dataArray objectAtIndex:[indexPath row]];
+                if (!feedItem.image)
+                    // Avoid the app icon download if the app already has an icon
+                {
+                    [self startIconDownload:feedItem forIndexPath:indexPath];
+                }
+            }
+        }
+      
+    }
+}
+
 - (void)loadImagesForOnscreenRows
 {
-    if (items.count > 0)
+    if (self.dataArray.count > 0)
     {
         NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
         for (NSIndexPath *indexPath in visiblePaths)
         {
-            FeedData *feedItem = [items objectAtIndex:[indexPath row]];
+            FeedData *feedItem = [self.dataArray objectAtIndex:[indexPath row]];
             
             if (!feedItem.image)
                 // Avoid the app icon download if the app already has an icon
             {
-                //[self startIconDownload:feedItem forIndexPath:indexPath];
+                [self startIconDownload:feedItem forIndexPath:indexPath];
             }
         }
     }
 }
+
 
 
 // -------------------------------------------------------------------------------
@@ -418,7 +538,7 @@
 // -------------------------------------------------------------------------------
 - (void)startIconDownload:(FeedData *)appRecord forIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"startIconDownload: %d %d", [indexPath section], [indexPath row]);
+    //NSLog(@"startIconDownload: %d %d", [indexPath section], [indexPath row]);
     //dispatch_async(dispatch_get_main_queue(), ^{
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
     if (iconDownloader == nil)

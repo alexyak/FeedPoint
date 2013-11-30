@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UnreadItems.h"
-#import "RSSItem.h"
+#import "FeedGroup.h"
 #import "FeedStream.h"
 
 typedef void (^RSSLoaderCompleteBlock)(NSString* title, NSArray* results);
@@ -19,6 +19,7 @@ typedef void (^UnreadItemsCompleteBlock)(UnreadItems* unreadItems);
 
 typedef void (^FeedCompleteBlock)(FeedStream* results);
 
+typedef void (^EmptyCompleteBlock)(BOOL result);
 
 @interface FeedService : NSObject
 {
@@ -31,11 +32,16 @@ typedef void (^FeedCompleteBlock)(FeedStream* results);
 
 -(void)getFeed: (NSString*) uri top: (int)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback;
 
+-(void)getFeedAsync: (NSString*) uri top: (int)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback;
+
 -(void)getTodayFeed: (NSString*) userId top: (int)t continuation: (NSString*) cont sort: (BOOL) old complete:(FeedCompleteBlock) callback;
 
 //- (UIStoryboardSegue *)segueForUnwindingToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController identifier:(NSString *)identifier NS_AVAILABLE_IOS(6_0);
 
 -(void)getUnreadCounts: (UnreadItemsCompleteBlock)callback;
+
+-(void)setAsRead: (NSString*) itemId complete: (EmptyCompleteBlock)callback;
+-(void)setAsUnRead: (NSString*) itemId complete: (EmptyCompleteBlock)callback;
 
 -(NSMutableURLRequest*) getRequest: (NSString*) uri;
 
@@ -44,6 +50,9 @@ typedef void (^FeedCompleteBlock)(FeedStream* results);
 @property (nonatomic, retain) NSString *UserId;
 
 @property (nonatomic, retain) NSMutableArray *TodayItems;
+
+@property (nonatomic, retain) FeedGroup *UncategorizedFeeds;
+
 
 @end
     

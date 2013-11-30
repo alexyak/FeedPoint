@@ -12,13 +12,21 @@
 #import "Token.h"
 
 
+@protocol DataAvailableDelegate <NSObject>
+
+-(void)dataAvailable;
+
+@end
+
 @class PagingViewController;
 
 @interface FeedPointAppDelegate : UIResponder <UIApplicationDelegate>{
     //UIWindow *window;
     PagingViewController *viewController;
+    // id<DataAvailableDelegate> delegate;
 }
 
+@property(nonatomic,assign)id delegate;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -33,5 +41,12 @@
 -(void)saveToken: (Token*) token;
 
 -(Token*) getToken;
+
+-(void)showWait;
+
+-(void)dismissWait;
+
+-(void)onDataAvailable;
+
 
 @end

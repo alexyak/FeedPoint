@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSString* title;
 @property (strong, nonatomic) NSString* source;
 @property (strong, nonatomic) NSMutableArray* items;
-@property (nonatomic, assign) int updatedCount;
+@property (nonatomic, assign) NSInteger updatedCount;
 @property (strong, nonatomic) NSString* updated;
 @property (strong, nonatomic) NSString* imageUrl;
 @property (strong, nonatomic) UIImage* image;

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PagingViewController : UIViewController<UIScrollViewDelegate> {
+@interface PagingViewController : UIViewController<UIScrollViewDelegate, UINavigationBarDelegate> {
 	UIScrollView* scrollView;
 	UIPageControl* pageControl;
 	

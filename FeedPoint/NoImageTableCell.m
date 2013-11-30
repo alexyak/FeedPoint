@@ -33,6 +33,9 @@
 -(void)layoutSubviews
 {
     
+    if (self.titleLabel.text == nil)
+        return;
+    
     CGFloat height = [self heightOfString:self.titleLabel.text withFont:self.titleLabel.font width: self.titleLabel.bounds.size.width];
     NSLog(@"height: %f", height);
     

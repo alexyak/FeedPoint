@@ -36,19 +36,44 @@
          
     }
     
+    //[self.webView loadHTMLString:@"" baseURL: nil];
+    
     return (WebViewCell*)self;
 }
 
+- (void)prepareForReuse
+{
+    self.item = nil;
+}
+
+-(void)layoutSubviews
+{
+    //self.webView = nil;
+    //self.webView  = [[UIWebView alloc] initWithFrame: CGRectMake(0.0f, 0.0f, 320.0f, 546.0f)];
+    //[self.webView loadHTMLString:@"<html></html>" baseURL: nil];
+    //[self updateCell];
+    
+}
+
+-(void) clear{
+   [self.webView loadHTMLString:@"<html></html>" baseURL: nil];
+    //self.webView = nil;
+}
+
+-(void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self setNeedsDisplay]; // force drawRect:
+}
 
 -(void)updateCell {
     
-    //NSString *sourcePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Assets"];
+    if (self.item == nil)
+    {
+        [self.webView loadHTMLString:@"<html></html>" baseURL: nil];
+        return;
+    }
     
     FeedItem *currentItem = self.item;
-    
-    //[self.navigationItem setTitle:currentItem.origin.title];
-    //[self.navigationItem setTitle:currentItem.origin.title];
-    
     
     NSMutableString *html = [NSMutableString stringWithString:@"<html>" ];
     
@@ -57,11 +82,12 @@
     [html appendString:@"<style>"];
     [html appendString:@"#Author{font-size: 28pt;word-wrap: break-word;clear: both;display: block;font-weight : normal; color: black;margin: 0 0 15px 0px;}"];
     [html appendString:@"#date{font-size: 28pt;line-height: 26px;color: Gray; margin: 0 0 30px 0px;}"];
-    [html appendString:@"#title{font-size: 46pt; font-weight: semibold; line-height: 1.1; word-wrap: break-word;clear:  both;display: color: black;margin: 0 0 10px 0px;}"];
+    [html appendString:@"#title{font-size: 46pt; font-weight: bold; line-height: 1.1; word-wrap: break-word;clear:  both;display: color: black;margin: 0 0 10px 0px;}"];
     [html appendString:@"a {color:#006699; text-decoration: none} a:link{color:#006699;}"];
     [html appendString:@"</style>"];
     [html appendString:@"</head>"];
     [html appendString:@"<body style='padding: 20px; font-family: Helvetica Neue; line-height: 1.5; font-size: 3em !important; word-wrap: break-word;clear: both;display: block;'>"];
+    
     if (currentItem.origin != nil)
         [html appendFormat: @"<div id='title'><a href='%@'>%@</a></div>", currentItem.origin.htmlUrl, currentItem.title];
     else
@@ -81,7 +107,7 @@
     [html appendString:@"</body>"];
     [html appendString:@"</html>"];
     
-    self.label.text = html;
+    self.html = html;
     
     [self.webView loadHTMLString:html baseURL: nil];
     

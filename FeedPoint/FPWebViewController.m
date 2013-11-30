@@ -8,7 +8,7 @@
 
 #import "FPWebViewController.h"
 #import "FeedData.h"
-#import "IonIcons.h"
+//#import "IonIcons.h"
 
 @interface FPWebViewController ()
 
@@ -32,7 +32,7 @@
 {
     [super viewDidLoad];
     
-    
+    /*
     UIBarButtonItem *menuButton = self.menuButton;
     menuButton.image = [IonIcons imageWithIcon:icon_navicon
                                  iconColor:[[UIColor alloc] initWithRed:12.0 /255 green:95.0 /255 blue:254.0 /255 alpha:1.0]
@@ -113,6 +113,10 @@
     [self.webView loadHTMLString:html baseURL: nil];
     
     // Do any additional setup after loading the view from its nib.
+     */
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL: self.link];
+    [self.webView loadRequest:request];
 }
                              
 

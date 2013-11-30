@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PagingViewController">
@@ -24,25 +24,35 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </scrollView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="60" translatesAutoresizingMaskIntoConstraints="NO" id="3Iy-8p-H89">
-                    <rect key="frame" x="0.0" y="526" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="526" width="320" height="60"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Item" id="sJD-Fk-1M4"/>
+                        <barButtonItem title="Item" id="sJD-Fk-1M4">
+                            <connections>
+                                <action selector="settingsButtonClicked:" destination="-1" id="yg3-Lb-vW2"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="W1J-dk-1Za"/>
-                        <barButtonItem title="Item" id="tDg-8p-Tcc"/>
+                        <barButtonItem title="Item" id="tDg-8p-Tcc">
+                            <connections>
+                                <action selector="menuButtonClicked:" destination="-1" id="CRv-qh-N8V"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
+                    <color key="tintColor" red="0.0" green="0.6588235294117647" blue="0.77647058823529413" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
                 <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="nN5-nN-Iag">
                     <rect key="frame" x="141" y="531" width="39" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" red="0.12156863510608673" green="0.44705885648727417" blue="0.90588241815567017" alpha="1" colorSpace="deviceRGB"/>
-                    <color key="pageIndicatorTintColor" red="0.097585319490000003" green="0.47619086170000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="pageIndicatorTintColor" red="0.0" green="0.6588235294117647" blue="0.77647058823529413" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="currentPageIndicatorTintColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" red="0.094117656350135803" green="0.35294118523597717" blue="0.88235300779342651" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

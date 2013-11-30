@@ -12,11 +12,30 @@
 #import "LoginViewController.h"
 #import "Token.h"
 
+
+
 @implementation FeedPointAppDelegate
+{
+    UIAlertView *megaAlert;
+    UIActivityIndicatorView* activityIndicator;
+}
 
 //@synthesize window;
 @synthesize viewController;
 @synthesize feedService;
+@synthesize delegate;
+
+
+-(void)onDataAvailable
+{
+    //Is anyone listening
+    if([delegate respondsToSelector:@selector(dataAvailable)])
+    {
+        //send the delegate function with the amount entered by the user
+        [delegate dataAvailable];
+    }
+    
+}
 
 -(void)saveToken: (Token*) token{
     
@@ -90,25 +109,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController =[[PagingViewController alloc] initWithNibName:@"PagingViewController" bundle:nil];
     
-    //self.mainViewController = [[FPMainViewController alloc] initWithNibName:@"FPMainViewController" bundle:nil];
- 
     self.navigationController = [[UINavigationController alloc] initWithRootViewController: self.viewController];
+    
+    [[UINavigationBar appearance] setBarTintColor:[[UIColor alloc] initWithRed:0.0 /255 green:168.0 /255 blue:198.0 /255 alpha:1.0]];
+
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor whiteColor], NSForegroundColorAttributeName,
+                                                           nil, NSShadowAttributeName,
+                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
+    
+    
+    self.navigationController.navigationBar.translucent = YES;
    
     LoginViewController *login =[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-
-    
     
     [self.viewController.navigationItem setTitle:@"Today"];
-    
-    //[self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-    
-    
-    //self.viewController.view.scrollView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.bounds.size.height, 0,0,0);
     
     self.window.rootViewController = self.navigationController;
     
@@ -137,6 +159,25 @@
     
     
     return YES;
+}
+
+
+-(void)showWait
+{
+    if (!activityIndicator)
+    {
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        activityIndicator.frame = CGRectMake(0, 0, 40, 40);
+        activityIndicator.center = self.window.center;
+        [self.viewController.view addSubview:activityIndicator];
+        [self.viewController.view bringSubviewToFront:activityIndicator];
+    }
+    [activityIndicator startAnimating];
+}
+
+-(void)dismissWait
+{
+    [activityIndicator stopAnimating];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

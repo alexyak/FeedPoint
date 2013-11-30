@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FeedListViewController">
             <connections>
-                <outlet property="backButton" destination="B4O-5E-L01" id="rYe-Ef-rlw"/>
-                <outlet property="forwardButton" destination="vVR-U2-8WU" id="qib-dT-kGB"/>
-                <outlet property="markButton" destination="GT3-6C-kWm" id="cFf-gH-BrJ"/>
-                <outlet property="menuButton" destination="gJe-Ke-4y8" id="AOe-P0-gCh"/>
-                <outlet property="shareButton" destination="fdH-JQ-3oZ" id="bxS-3y-5hu"/>
                 <outlet property="tableView" destination="bq0-bQ-fM2" id="Zgf-Xz-VxB"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -20,8 +15,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bq0-bQ-fM2">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bq0-bQ-fM2">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -29,21 +24,6 @@
                         <outlet property="delegate" destination="-1" id="Yip-Uf-BX7"/>
                     </connections>
                 </tableView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hd0-bl-QGj">
-                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <items>
-                        <barButtonItem title="Back" id="B4O-5E-L01"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ve5-Bm-kzX"/>
-                        <barButtonItem title="Forward" id="vVR-U2-8WU"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ohC-90-cz1"/>
-                        <barButtonItem title="Share" id="fdH-JQ-3oZ"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="KSE-y5-wMc"/>
-                        <barButtonItem title="Mark" id="GT3-6C-kWm"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eF7-eM-b5B"/>
-                        <barButtonItem title="Menu" style="plain" id="gJe-Ke-4y8"/>
-                    </items>
-                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
